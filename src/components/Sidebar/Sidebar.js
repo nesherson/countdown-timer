@@ -6,7 +6,6 @@ const Aside = Styled.aside`
     min-width: 220px;
     background-color: #2e48cd;
     color: #f4f4f4;
-    //padding: 35px 15px 20px 5%;
     position: fixed;
     height: 100%;
     transition: background-color 0.2s ease;
@@ -19,6 +18,7 @@ const Logo = Styled.div`
     background-color:#596ed9;
     color: #f4f4f4;
     padding: 15px 20px;
+    
 `;
 
 const NavigationList = Styled.ul`
@@ -32,10 +32,11 @@ const Navigation = Styled.nav`
 `;
 
 const ListItem = Styled.li`
-    padding: 10px 5px;
+    padding: 10px 7px;
     font-size: 1.15rem;
+    border-radius: 5px;
     &:hover {
-        background-color: #596ed9;
+        background-color: #1a2b81;
     }
 `;
 
