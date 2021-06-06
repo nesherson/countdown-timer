@@ -1,10 +1,16 @@
+import Styled from 'styled-components';
+
+import Card from './Card/Card';
+
+const Events = Styled.main`
+    padding: 25px 20px;
+`;
+
 const EventSection = () => {
   return (
-    <div>
-      <div>Card 1</div>
-      <div>Card 2</div>
-      <div>Card 3</div>
-    </div>
+    <Events>
+      <Card title='Card 1' />
+    </Events>
   );
 };
 
