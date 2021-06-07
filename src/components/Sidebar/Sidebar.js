@@ -14,10 +14,16 @@ const Aside = Styled.aside`
     }
 `;
 
-const Logo = Styled.div`
+const LogoWrapper = Styled.div`
     background-color:#596ed9;
     color: #f4f4f4;
-    padding: 15px 20px;
+    height: 104px;
+    box-sizing: border-box;
+`;
+
+const StyledHeader = Styled.h2`
+    margin: 0;
+    padding: 30px 45px;
     
 `;
 
@@ -43,9 +49,9 @@ const ListItem = Styled.li`
 const Sidebar = () => {
   return (
     <Aside>
-      <Logo>
-        <h2>LOGO</h2>
-      </Logo>
+      <LogoWrapper>
+        <StyledHeader>LOGO</StyledHeader>
+      </LogoWrapper>
       <Navigation>
         <NavigationList>
           <ListItem>Home</ListItem>
