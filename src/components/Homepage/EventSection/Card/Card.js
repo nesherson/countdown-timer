@@ -48,7 +48,7 @@ const StyledSpan = Styled.span`
     display: block;
 `;
 
-const Card = (props) => {
+const Card = ({ eventName }) => {
   return (
     <CardWrapper>
       <Timer>
@@ -59,7 +59,7 @@ const Card = (props) => {
       </Timer>
       <CardDetails>
         <StyledHeader>Countdown to:</StyledHeader>
-        <EventName>My birthday</EventName>
+        <EventName>{eventName}</EventName>
         <Date>27.02.2022</Date>
       </CardDetails>
       <StyledSpan>Options</StyledSpan>

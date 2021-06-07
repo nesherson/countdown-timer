@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Styled from 'styled-components';
 
 import EventSection from './EventSection/EventSection';
@@ -21,13 +22,27 @@ const Header = Styled.header`
 `;
 
 const Homepage = () => {
+  const [events, setEvents] = useState([]);
+
+  const handleCreateEvent = (eventName) => {
+    const id = `${Math.random()}${eventName}`;
+    const event = {
+      id: id,
+      name: eventName,
+    };
+    const updatedEvents = [...events, event];
+    setEvents(updatedEvents);
+  };
+
+  console.log('Homepage/events --> ', events);
+
   return (
     <Main>
       <Header>
         <StyledH1>Events</StyledH1>
       </Header>
-      <AddEvent />
-      <EventSection />
+      <AddEvent createEvent={handleCreateEvent} />
+      <EventSection events={events} />
     </Main>
   );
 };

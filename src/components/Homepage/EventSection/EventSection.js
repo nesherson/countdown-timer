@@ -7,11 +7,12 @@ const Events = Styled.main`
     display: flex;
 `;
 
-const EventSection = () => {
+const EventSection = ({ events }) => {
   return (
     <Events>
-      <Card title='Card 1' />
-      <Card title='Card 2' />
+      {events.map((event) => {
+        return <Card key={event.id} eventName={event.name} />;
+      })}
     </Events>
   );
 };

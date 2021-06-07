@@ -42,17 +42,23 @@ const StyledSpan = Styled.span`
     display: block;
 `;
 
-const AddEvent = (props) => {
+const AddEvent = ({ createEvent }) => {
   const [eventName, setEventName] = useState('');
 
   const handleOnChange = (e) => {
     setEventName(e.target.value);
   };
 
+  const handleOnClick = () => {
+    createEvent(eventName);
+    setEventName('');
+  };
+
   return (
     <CardWrapper>
       <StyledHeader>Create an Event</StyledHeader>
       <input type='text' value={eventName} onChange={handleOnChange} />
+      <button onClick={handleOnClick}>Create</button>
     </CardWrapper>
   );
 };
