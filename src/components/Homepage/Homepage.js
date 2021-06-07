@@ -1,6 +1,7 @@
 import Styled from 'styled-components';
 
 import EventSection from './EventSection/EventSection';
+import AddEvent from './AddEvent/AddEvent';
 
 const Main = Styled.main`
     margin-left: 20%;
@@ -25,6 +26,7 @@ const Homepage = () => {
       <Header>
         <StyledH1>Events</StyledH1>
       </Header>
+      <AddEvent />
       <EventSection />
     </Main>
   );
