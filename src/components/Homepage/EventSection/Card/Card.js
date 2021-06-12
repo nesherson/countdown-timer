@@ -48,19 +48,19 @@ const StyledSpan = Styled.span`
     display: block;
 `;
 
-const Card = ({ eventName }) => {
+const Card = ({ eventName, eventDate, eventTime }) => {
   return (
     <CardWrapper>
       <Timer>
-        <Counter value='3' name='days' />
-        <Counter value='22' name='hours' />
-        <Counter value='45' name='minutes' />
-        <Counter value='33' name='seconds' />
+        <Counter value={eventTime.days} name='days' />
+        <Counter value={eventTime.hours} name='hours' />
+        <Counter value={eventTime.minutes} name='minutes' />
+        <Counter value={eventTime.seconds} name='seconds' />
       </Timer>
       <CardDetails>
         <StyledHeader>Countdown to:</StyledHeader>
         <EventName>{eventName}</EventName>
-        <Date>27.02.2022</Date>
+        <Date>{eventDate}</Date>
       </CardDetails>
       <StyledSpan>Options</StyledSpan>
     </CardWrapper>

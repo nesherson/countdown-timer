@@ -24,17 +24,22 @@ const Header = Styled.header`
 const Homepage = () => {
   const [events, setEvents] = useState([]);
 
-  const handleCreateEvent = (eventName) => {
+  const handleCreateEvent = (eventName, eventTime, selectedDate) => {
     const id = `${Math.random()}${eventName}`;
+    const updatedDate = new Date(selectedDate).toLocaleDateString(undefined, {
+      year: 'numeric', month: 'long', day: 'numeric'
+    });
     const event = {
       id: id,
       name: eventName,
+      date: updatedDate,
+      time: eventTime
     };
     const updatedEvents = [...events, event];
     setEvents(updatedEvents);
   };
 
-  console.log('Homepage/events --> ', events);
+  console.log('Events --> ', events);
 
   return (
     <Main>

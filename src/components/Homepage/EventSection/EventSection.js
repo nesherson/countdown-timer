@@ -11,7 +11,7 @@ const EventSection = ({ events }) => {
   return (
     <Events>
       {events.map((event) => {
-        return <Card key={event.id} eventName={event.name} />;
+        return <Card key={event.id} eventName={event.name} eventDate={event.date} eventTime={event.time}/>;
       })}
     </Events>
   );
