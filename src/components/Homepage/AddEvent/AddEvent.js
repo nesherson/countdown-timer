@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import Styled from 'styled-components';
 
+import DatePicker from '../../../UI/DatePicker/DatePicker';
+
 const CardWrapper = Styled.div`
     margin: 25px;
     width: 250px;
@@ -57,6 +59,7 @@ const AddEvent = ({ createEvent }) => {
   return (
     <CardWrapper>
       <StyledHeader>Create an Event</StyledHeader>
+      <DatePicker />
       <input type='text' value={eventName} onChange={handleOnChange} />
       <button onClick={handleOnClick}>Create</button>
     </CardWrapper>
