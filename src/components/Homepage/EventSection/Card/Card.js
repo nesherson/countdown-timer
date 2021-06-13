@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import Styled from 'styled-components';
 
 import Counter from '../../../../UI/Counter/Counter';
@@ -48,14 +49,96 @@ const StyledSpan = Styled.span`
     display: block;
 `;
 
+const testTime = {
+  days: 1,
+  hours: 1,
+  minutes: 1,
+  seconds: 10,
+};
+
+const SECOND = 1;
+const MINUTE = 1;
+const HOUR = 1;
+const DAY = 1;
+const intervalSpeed = 45;
+
 const Card = ({ eventName, eventDate, eventTime }) => {
+  const [time, setTime] = useState(testTime);
+  const [timerOver, setTimerOver] = useState(false);
+
+  useEffect(() => {
+    const updateTime = (time) => {
+      if (timerOver) {
+        return;
+      }
+      if (
+        time.days === 0 &&
+        time.hours === 0 &&
+        time.minutes === 0 &&
+        time.seconds === 0
+      ) {
+        setTimerOver(true);
+        return {
+          days: 0,
+          hours: 0,
+          minutes: 0,
+          seconds: 0,
+        };
+      }
+      if (time.seconds === 0 && time.minutes !== 0) {
+        return {
+          ...time,
+          seconds: 60,
+          minutes: time.minutes - MINUTE,
+        };
+      } else if (time.seconds === 0 && time.minutes === 0 && time.hours !== 0) {
+        return {
+          ...time,
+          minutes: 60,
+          hours: time.hours - HOUR,
+        };
+      } else if (
+        time.seconds === 0 &&
+        time.minutes === 0 &&
+        time.hours === 0 &&
+        time.days !== 0
+      ) {
+        return {
+          ...time,
+          hours: 24,
+          days: time.days - DAY,
+        };
+      } else if (time.seconds >= 0) {
+        return {
+          ...time,
+          seconds: time.seconds - SECOND,
+        };
+      }
+    };
+
+    const intervalId = setInterval(() => {
+      setTime((prevState) => updateTime(prevState));
+    }, intervalSpeed);
+
+    if (timerOver) {
+      console.log('clear --> ', time);
+      clearInterval(intervalId);
+    }
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [timerOver]);
+
+  console.log('Card/time --> ', time);
+
   return (
     <CardWrapper>
       <Timer>
-        <Counter value={eventTime.days} name='days' />
-        <Counter value={eventTime.hours} name='hours' />
-        <Counter value={eventTime.minutes} name='minutes' />
-        <Counter value={eventTime.seconds} name='seconds' />
+        <Counter value={time.days} name='days' />
+        <Counter value={time.hours} name='hours' />
+        <Counter value={time.minutes} name='minutes' />
+        <Counter value={time.seconds} name='seconds' />
       </Timer>
       <CardDetails>
         <StyledHeader>Countdown to:</StyledHeader>
