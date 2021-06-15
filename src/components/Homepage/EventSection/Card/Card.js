@@ -60,10 +60,10 @@ const SECOND = 1;
 const MINUTE = 1;
 const HOUR = 1;
 const DAY = 1;
-const intervalSpeed = 45;
+const intervalSpeed = 650;
 
 const Card = ({ eventName, eventDate, eventTime }) => {
-  const [time, setTime] = useState(testTime);
+  const [time, setTime] = useState(eventTime);
   const [timerOver, setTimerOver] = useState(false);
 
   useEffect(() => {

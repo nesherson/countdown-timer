@@ -44,71 +44,89 @@ const StyledSpan = Styled.span`
     display: block;
 `;
 
+const Warning = Styled.span`
+  display: block;
+  color: #f96353;
+  font-size: 0.9rem;
+`;
+
 const formatDate = (date) => {
   return new Date(date);
 };
 
 const formatSelectedDate = (date) => {
   const updatedDate = new Date(date);
-  return new Date(updatedDate.getFullYear(), updatedDate.getMonth(), updatedDate.getDate(), 0, 0, 0, 0);
-}
+  return new Date(
+    updatedDate.getFullYear(),
+    updatedDate.getMonth(),
+    updatedDate.getDate(),
+    0,
+    0,
+    0,
+    0
+  );
+};
 
 function secondsToDhms(seconds) {
-  seconds = Number(seconds);
-  var d = Math.floor(seconds / (3600*24));
-  var h = Math.floor(seconds % (3600*24) / 3600);
-  var m = Math.floor(seconds % 3600 / 60);
-  var s = Math.floor(seconds % 60);
-  
-  // var dDisplay = d > 0 ? d + (d == 1 ? " day, " : " days, ") : "";
-  // var hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours, ") : "";
-  // var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
-  // var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
-  // return dDisplay + hDisplay + mDisplay + sDisplay;
+  const tempSeconds = Number(seconds);
+  const d = Math.floor(tempSeconds / (3600 * 24));
+  const h = Math.floor((tempSeconds % (3600 * 24)) / 3600);
+  const m = Math.floor((tempSeconds % 3600) / 60);
+  const s = Math.floor(tempSeconds % 60);
+
   return {
     days: d,
     hours: h,
     minutes: m,
-    seconds: s
+    seconds: s,
   };
+}
+
+const getTimeBetweenDates = (dateInitial, dateFinal) => {
+  if ((formatSelectedDate(dateFinal) - formatDate(dateInitial)) / 1000 < 0) {
+    return null;
   }
 
-  const getTimeBetweenDates = (current, selected) => {
-    const currentSec = formatDate(current).getTime();
-    const selectedSec = formatSelectedDate(selected).getTime();
-  
-    const seconds = Math.abs((selectedSec - currentSec)/1000);
-
-    return secondsToDhms(seconds);
-  }
+  return secondsToDhms(
+    (formatSelectedDate(dateFinal) - formatDate(dateInitial)) / 1000
+  );
+};
 
 const AddEvent = ({ createEvent }) => {
   const [eventName, setEventName] = useState('');
   const [selectedDate, setSelectedDate] = useState('2021-06-12');
-
+  const [invalidInput, setInvalidInput] = useState(false);
 
   const handleEventNameOnChange = (e) => {
     setEventName(e.target.value);
-  };
-
-  const handleEventCreate = () => {
-    const currentDate = Date.now();
-    const eventTime = getTimeBetweenDates(currentDate, selectedDate);
-    createEvent(eventName, eventTime, selectedDate);
-    setEventName('');
   };
 
   const handleSelectedDate = (date) => {
     setSelectedDate(date);
   };
 
-  //console.log('AddEvent/time --> ', getTimeBetweenDates(currentDate, selectedDate));
+  const handleEventCreate = () => {
+    const currentDate = Date.now();
+    const eventTime = getTimeBetweenDates(currentDate, selectedDate);
+    if (!eventTime) {
+      setInvalidInput(true);
+      return;
+    }
+    console.log('currentDate: ', formatDate(currentDate));
+    console.log('selectedDate: ', formatSelectedDate(selectedDate));
+    console.log('eventTime: ', eventTime);
+
+    createEvent(eventName, eventTime, selectedDate);
+    setInvalidInput(false);
+    setEventName('');
+  };
 
   return (
     <CardWrapper>
       <StyledHeader>Create an Event</StyledHeader>
-      <DatePicker date={selectedDate} handleSelectedDate={handleSelectedDate}/>
+      <DatePicker date={selectedDate} handleSelectedDate={handleSelectedDate} />
       <input type='text' value={eventName} onChange={handleEventNameOnChange} />
+      {invalidInput ? <Warning>Wrong Date!</Warning> : null}
       <button onClick={handleEventCreate}>Create</button>
     </CardWrapper>
   );
