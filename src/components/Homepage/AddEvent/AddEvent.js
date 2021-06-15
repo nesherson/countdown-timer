@@ -3,17 +3,21 @@ import Styled from 'styled-components';
 
 import DatePicker from '../../../UI/DatePicker/DatePicker';
 
-const CardWrapper = Styled.div`
-    margin: 25px;
-    width: 250px;
-    border: 1px solid #96a2ac;
-    padding: 30px 25px 20px 25px;
-    border-radius: 5px;
-    box-shadow: 1px 1px 2px 2px #d9d9d9;
+const StyledDiv = Styled.div`
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
-const CardDetails = Styled.div`
-    text-align: center;
+const CardWrapper = Styled.div`
+    width: 350px;
+    height: 400px;
+    border: 1px solid #96a2ac;
+    padding: 30px 35px 20px 35px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 2px 2px #d9d9d9;
 `;
 
 const StyledHeader = Styled.h2`
@@ -23,31 +27,25 @@ const StyledHeader = Styled.h2`
     padding: 15px 0;
 `;
 
-const EventName = Styled.h3`
-    color: #7e8e9a;
-    font-size: 1.05rem;
-    padding: 0;
-    margin: 0;
-`;
-
-const StyledDate = Styled.span`
-     color: #96a2ac;
-     font-size: 0.8rem;
-     border-bottom: 1px solid #96a2ac;
-     display: block;
-     padding: 0 0 15px 0;
-`;
-
-const StyledSpan = Styled.span`
-    color: #96a2ac;
-    padding: 15px 0 0 0;
-    display: block;
-`;
-
 const Warning = Styled.span`
   display: block;
   color: #f96353;
   font-size: 0.9rem;
+`;
+
+const StyledInput = Styled.input`
+  display: block;
+  width: 100%;
+  margin-bottom: 12px;
+  font-size: 1.25rem;
+  border: none;
+  padding: 8px 0;
+  border-bottom: 1px solid #000;
+
+  &:focus {
+    border-bottom: 1px solid #2e48cd;
+    outline: none;
+  }
 `;
 
 const formatDate = (date) => {
@@ -122,13 +120,24 @@ const AddEvent = ({ createEvent }) => {
   };
 
   return (
-    <CardWrapper>
-      <StyledHeader>Create an Event</StyledHeader>
-      <DatePicker date={selectedDate} handleSelectedDate={handleSelectedDate} />
-      <input type='text' value={eventName} onChange={handleEventNameOnChange} />
-      {invalidInput ? <Warning>Wrong Date!</Warning> : null}
-      <button onClick={handleEventCreate}>Create</button>
-    </CardWrapper>
+    <StyledDiv>
+      <CardWrapper>
+        <StyledHeader>Create an Event</StyledHeader>
+        <StyledInput
+          type='text'
+          value={eventName}
+          onChange={handleEventNameOnChange}
+          placeholder='Title'
+        />
+        <DatePicker
+          date={selectedDate}
+          handleSelectedDate={handleSelectedDate}
+        />
+
+        {invalidInput ? <Warning>Wrong Date!</Warning> : null}
+        <button onClick={handleEventCreate}>Create</button>
+      </CardWrapper>
+    </StyledDiv>
   );
 };
 
