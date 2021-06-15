@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Route } from 'wouter';
 import Styled from 'styled-components';
 
 import EventSection from './EventSection/EventSection';
@@ -13,27 +14,21 @@ const StyledH1 = Styled.h1`
     padding: 0;
 `;
 
-const Header = Styled.header`
-    margin: 0;
-    padding: 30px 45px;
-    border-bottom: 1px solid #eaedfa;
-    box-sizing: border-box;
-    height: 104px;
-`;
-
 const Homepage = () => {
   const [events, setEvents] = useState([]);
 
   const handleCreateEvent = (eventName, eventTime, selectedDate) => {
     const id = `${Math.random()}${eventName}`;
     const updatedDate = new Date(selectedDate).toLocaleDateString(undefined, {
-      year: 'numeric', month: 'long', day: 'numeric'
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
     });
     const event = {
       id: id,
       name: eventName,
       date: updatedDate,
-      time: eventTime
+      time: eventTime,
     };
     const updatedEvents = [...events, event];
     setEvents(updatedEvents);
@@ -43,11 +38,15 @@ const Homepage = () => {
 
   return (
     <Main>
-      <Header>
-        <StyledH1>Events</StyledH1>
-      </Header>
-      <AddEvent createEvent={handleCreateEvent} />
-      <EventSection events={events} />
+      <Route path='/events'>
+        <EventSection events={events} />
+      </Route>
+      <Route path='/add-event'>
+        <AddEvent createEvent={handleCreateEvent} />
+      </Route>
+      <Route path='/options'>
+        <StyledH1>Nothing Here!</StyledH1>
+      </Route>
     </Main>
   );
 };

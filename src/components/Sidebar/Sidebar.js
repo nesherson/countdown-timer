@@ -1,4 +1,5 @@
 import Styled from 'styled-components';
+import { Link } from 'wouter';
 
 const Aside = Styled.aside`
     box-sizing: border-box;
@@ -54,9 +55,15 @@ const Sidebar = () => {
       </LogoWrapper>
       <Navigation>
         <NavigationList>
-          <ListItem>Home</ListItem>
-          <ListItem>Add Event</ListItem>
-          <ListItem>Options</ListItem>
+          <ListItem>
+            <Link href='/events'>Home</Link>
+          </ListItem>
+          <ListItem>
+            <Link href='/add-event'>Add Event</Link>
+          </ListItem>
+          <ListItem>
+            <Link href='/options'>Options</Link>
+          </ListItem>
         </NavigationList>
       </Navigation>
     </Aside>
