@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Styled from 'styled-components';
 
 import DatePicker from '../../../UI/DatePicker/DatePicker';
+import ColorPicker from '../../../UI/ColorPicker/ColorPicker';
 
 const StyledDiv = Styled.div`
   width: 100%;
@@ -16,7 +17,7 @@ const CardWrapper = Styled.div`
     height: 400px;
     border: 1px solid #96a2ac;
     padding: 30px 35px 20px 35px;
-    border-radius: 5px;
+    border-radius: 10px;
     box-shadow: 1px 1px 2px 2px #d9d9d9;
 `;
 
@@ -25,6 +26,7 @@ const StyledHeader = Styled.h2`
     font-weight: 400;
     border-bottom: 1px solid #96a2ac;
     padding: 15px 0;
+    margin-bottom: 35px;
 `;
 
 const Warning = Styled.span`
@@ -129,6 +131,7 @@ const AddEvent = ({ createEvent }) => {
           onChange={handleEventNameOnChange}
           placeholder='Title'
         />
+        <ColorPicker />
         <DatePicker
           date={selectedDate}
           handleSelectedDate={handleSelectedDate}
