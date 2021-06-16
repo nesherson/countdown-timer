@@ -47,6 +47,11 @@ const ListItem = Styled.li`
     }
 `;
 
+const StyledLink = Styled(Link)`
+  text-decoration: none;
+  color: #fff;
+`;
+
 const Sidebar = () => {
   return (
     <Aside>
@@ -56,13 +61,13 @@ const Sidebar = () => {
       <Navigation>
         <NavigationList>
           <ListItem>
-            <Link href='/events'>Home</Link>
+            <StyledLink href='/events'>Events</StyledLink>
           </ListItem>
           <ListItem>
-            <Link href='/add-event'>Add Event</Link>
+            <StyledLink href='/add-event'>Add Event</StyledLink>
           </ListItem>
           <ListItem>
-            <Link href='/options'>Options</Link>
+            <StyledLink href='/options'>Options</StyledLink>
           </ListItem>
         </NavigationList>
       </Navigation>
