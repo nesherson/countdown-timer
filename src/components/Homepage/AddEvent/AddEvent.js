@@ -6,10 +6,23 @@ import ColorPicker from '../../../UI/ColorPicker/ColorPicker';
 
 const StyledDiv = Styled.div`
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 104px);
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const StyledH1 = Styled.h1`
+    margin: 0;
+    padding: 0;
+`;
+
+const Header = Styled.header`
+    margin: 0;
+    padding: 30px 45px;
+    border-bottom: 1px solid #eaedfa;
+    box-sizing: border-box;
+    height: 104px;
 `;
 
 const CardWrapper = Styled.div`
@@ -149,29 +162,34 @@ const AddEvent = ({ createEvent }) => {
   };
 
   return (
-    <StyledDiv>
-      <CardWrapper>
-        <CardBody>
-          <StyledHeader>Create an Event</StyledHeader>
-          <StyledInput
-            type='text'
-            value={eventName}
-            onChange={handleEventNameOnChange}
-            placeholder='Title'
-          />
-          <ColorPicker handleColor={handleSelectedColor} />
-          <DatePicker
-            date={selectedDate}
-            handleSelectedDate={handleSelectedDate}
-          />
+    <>
+      <Header>
+        <StyledH1>Add Event</StyledH1>
+      </Header>
+      <StyledDiv>
+        <CardWrapper>
+          <CardBody>
+            <StyledHeader>Create an Event</StyledHeader>
+            <StyledInput
+              type='text'
+              value={eventName}
+              onChange={handleEventNameOnChange}
+              placeholder='Title'
+            />
+            <ColorPicker handleColor={handleSelectedColor} />
+            <DatePicker
+              date={selectedDate}
+              handleSelectedDate={handleSelectedDate}
+            />
 
-          {invalidInput ? <Warning>Wrong Date!</Warning> : null}
-        </CardBody>
-        <CardFooter>
-          <StyledButton onClick={handleEventCreate}>Create</StyledButton>
-        </CardFooter>
-      </CardWrapper>
-    </StyledDiv>
+            {invalidInput ? <Warning>Wrong Date!</Warning> : null}
+          </CardBody>
+          <CardFooter>
+            <StyledButton onClick={handleEventCreate}>Create</StyledButton>
+          </CardFooter>
+        </CardWrapper>
+      </StyledDiv>
+    </>
   );
 };
 
