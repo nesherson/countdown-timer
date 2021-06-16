@@ -14,11 +14,13 @@ const StyledDiv = Styled.div`
 
 const CardWrapper = Styled.div`
     width: 350px;
-    height: 400px;
-    border: 1px solid #96a2ac;
-    padding: 30px 35px 20px 35px;
     border-radius: 10px;
     box-shadow: 1px 1px 2px 2px #d9d9d9;
+`;
+
+const CardBody = Styled.main`
+    height: 80%;
+    padding: 10px 35px 30px 35px;
 `;
 
 const StyledHeader = Styled.h2`
@@ -26,7 +28,16 @@ const StyledHeader = Styled.h2`
     font-weight: 400;
     border-bottom: 1px solid #96a2ac;
     padding: 15px 0;
-    margin-bottom: 35px;
+    margin-bottom: 25px;
+`;
+
+const CardFooter = Styled.footer`
+    border-top: 1px solid #eaedfa;
+    height: 17%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 15px 35px 15px 35px;
 `;
 
 const Warning = Styled.span`
@@ -48,6 +59,17 @@ const StyledInput = Styled.input`
     border-bottom: 1px solid #2e48cd;
     outline: none;
   }
+`;
+
+const StyledButton = Styled.button`
+  padding: 8px 18px;
+  border: none;
+  background-color: #2e48cd;
+  border-top: 2px solid  #acb7ec;
+  color: #fff;
+  border-radius: 5px;
+  font-size: 0.85rem;
+  font-weight: 500;
 `;
 
 const formatDate = (date) => {
@@ -129,21 +151,25 @@ const AddEvent = ({ createEvent }) => {
   return (
     <StyledDiv>
       <CardWrapper>
-        <StyledHeader>Create an Event</StyledHeader>
-        <StyledInput
-          type='text'
-          value={eventName}
-          onChange={handleEventNameOnChange}
-          placeholder='Title'
-        />
-        <ColorPicker handleColor={handleSelectedColor} />
-        <DatePicker
-          date={selectedDate}
-          handleSelectedDate={handleSelectedDate}
-        />
+        <CardBody>
+          <StyledHeader>Create an Event</StyledHeader>
+          <StyledInput
+            type='text'
+            value={eventName}
+            onChange={handleEventNameOnChange}
+            placeholder='Title'
+          />
+          <ColorPicker handleColor={handleSelectedColor} />
+          <DatePicker
+            date={selectedDate}
+            handleSelectedDate={handleSelectedDate}
+          />
 
-        {invalidInput ? <Warning>Wrong Date!</Warning> : null}
-        <button onClick={handleEventCreate}>Create</button>
+          {invalidInput ? <Warning>Wrong Date!</Warning> : null}
+        </CardBody>
+        <CardFooter>
+          <StyledButton onClick={handleEventCreate}>Create</StyledButton>
+        </CardFooter>
       </CardWrapper>
     </StyledDiv>
   );
