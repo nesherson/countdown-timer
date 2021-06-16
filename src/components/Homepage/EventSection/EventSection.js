@@ -34,6 +34,7 @@ const EventSection = ({ events }) => {
               eventName={event.name}
               eventDate={event.date}
               eventTime={event.time}
+              color={event.color}
             />
           );
         })}

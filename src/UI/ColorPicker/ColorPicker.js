@@ -36,7 +36,7 @@ const StyledLabel = Styled.label`
     font-size: 0.9rem;
 `;
 
-const ColorPicker = () => {
+const ColorPicker = ({ handleColor }) => {
   const [colors, setColors] = useState([
     { value: '#f9371c', selected: true },
     { value: '#f97c1c', selected: false },
@@ -55,6 +55,7 @@ const ColorPicker = () => {
       }
     });
     setColors(updatedColors);
+    handleColor(colors[i].value);
   };
 
   return (

@@ -3,12 +3,12 @@ import Styled from 'styled-components';
 const CounterWrapper = Styled.div`
   width: 50px;
   height: auto;
-  
 `;
 
+//#596ed9
 const CounterNumber = Styled.div`
     padding: 10px;
-    background-color: #596ed9;
+    background-color: ${(props) => props.color};
     color: #fff;
     font-size: 1.40rem;
     text-align: center;
@@ -23,11 +23,11 @@ const Text = Styled.p`
   color: #96a2ac;
 `;
 
-const Counter = (props) => {
+const Counter = ({ value, name, color }) => {
   return (
     <CounterWrapper>
-      <CounterNumber>{props.value}</CounterNumber>
-      <Text>{props.name}</Text>
+      <CounterNumber color={color}>{value}</CounterNumber>
+      <Text>{name}</Text>
     </CounterWrapper>
   );
 };

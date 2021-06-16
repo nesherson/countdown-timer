@@ -96,6 +96,7 @@ const AddEvent = ({ createEvent }) => {
   const [eventName, setEventName] = useState('');
   const [selectedDate, setSelectedDate] = useState('2021-06-12');
   const [invalidInput, setInvalidInput] = useState(false);
+  const [color, setColor] = useState('#f9371c');
 
   const handleEventNameOnChange = (e) => {
     setEventName(e.target.value);
@@ -103,6 +104,10 @@ const AddEvent = ({ createEvent }) => {
 
   const handleSelectedDate = (date) => {
     setSelectedDate(date);
+  };
+
+  const handleSelectedColor = (color) => {
+    setColor(color);
   };
 
   const handleEventCreate = () => {
@@ -116,7 +121,7 @@ const AddEvent = ({ createEvent }) => {
     console.log('selectedDate: ', formatSelectedDate(selectedDate));
     console.log('eventTime: ', eventTime);
 
-    createEvent(eventName, eventTime, selectedDate);
+    createEvent(eventName, eventTime, selectedDate, color);
     setInvalidInput(false);
     setEventName('');
   };
@@ -131,7 +136,7 @@ const AddEvent = ({ createEvent }) => {
           onChange={handleEventNameOnChange}
           placeholder='Title'
         />
-        <ColorPicker />
+        <ColorPicker handleColor={handleSelectedColor} />
         <DatePicker
           date={selectedDate}
           handleSelectedDate={handleSelectedDate}

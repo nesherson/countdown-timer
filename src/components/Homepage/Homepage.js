@@ -17,7 +17,12 @@ const StyledH1 = Styled.h1`
 const Homepage = () => {
   const [events, setEvents] = useState([]);
 
-  const handleCreateEvent = (eventName, eventTime, selectedDate) => {
+  const handleCreateEvent = (
+    eventName,
+    eventTime,
+    selectedDate,
+    selectedColor
+  ) => {
     const id = `${Math.random()}${eventName}`;
     const updatedDate = new Date(selectedDate).toLocaleDateString(undefined, {
       year: 'numeric',
@@ -29,6 +34,7 @@ const Homepage = () => {
       name: eventName,
       date: updatedDate,
       time: eventTime,
+      color: selectedColor,
     };
     const updatedEvents = [...events, event];
     setEvents(updatedEvents);

@@ -62,7 +62,7 @@ const HOUR = 1;
 const DAY = 1;
 const intervalSpeed = 650;
 
-const Card = ({ eventName, eventDate, eventTime }) => {
+const Card = ({ eventName, eventDate, eventTime, color }) => {
   const [time, setTime] = useState(eventTime);
   const [timerOver, setTimerOver] = useState(false);
 
@@ -135,10 +135,10 @@ const Card = ({ eventName, eventDate, eventTime }) => {
   return (
     <CardWrapper>
       <Timer>
-        <Counter value={time.days} name='days' />
-        <Counter value={time.hours} name='hours' />
-        <Counter value={time.minutes} name='minutes' />
-        <Counter value={time.seconds} name='seconds' />
+        <Counter value={time.days} name='days' color={color} />
+        <Counter value={time.hours} name='hours' color={color} />
+        <Counter value={time.minutes} name='minutes' color={color} />
+        <Counter value={time.seconds} name='seconds' color={color} />
       </Timer>
       <CardDetails>
         <StyledHeader>Countdown to:</StyledHeader>
