@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import Styled from 'styled-components';
+import Styled, { css } from 'styled-components';
 
-const Wrapper = Styled.div`
-    margin: 0px 0 15px 0;
+const Container = Styled.div`
+    margin: 25px 0 20px 0;
     display: flex;
     flex-flow: row;
     align-items: center;
@@ -13,21 +13,19 @@ const Colors = Styled.div`
     flex-flow: row;
 `;
 
-const ColorWrapper = Styled.div`
-    border-radius: 50%;
-    border: 3px solid ${(props) => props.color};
-    opacity: ${(props) => (props.selected ? '0.5' : '1.0')};
-    visibility: ${(props) => (props.selected ? 'visible' : 'hidden')};
-`;
-
 const Color = Styled.div`
-    margin: 2px 2px;
+    margin: 2px 4px;
     width: 22px;
     height: 22px;
     border-radius: 50%;
     background-color: ${(props) => props.color};
-    visibility: visible;
-    opacity: 1.0;
+    ${(props) =>
+      props.selected
+        ? css`
+            outline: 4px solid ${(props) => setAlpha(props.color, 0.7)};
+            outline-offset: 1px;
+          `
+        : ''}
 `;
 
 const StyledLabel = Styled.label`
@@ -36,14 +34,20 @@ const StyledLabel = Styled.label`
     font-size: 0.9rem;
 `;
 
+const setAlpha = (color, alphaValue) => {
+  let tempColor = color.split(' ');
+  tempColor[3] = `${alphaValue})`;
+  return tempColor.join(' ');
+};
+
 const ColorPicker = ({ handleColor }) => {
   const [colors, setColors] = useState([
-    { value: '#f9371c', selected: true },
-    { value: '#f97c1c', selected: false },
-    { value: '#f9c81c', selected: false },
-    { value: '#41d0b6', selected: false },
-    { value: '#2cadf6', selected: false },
-    { value: '#6562fc', selected: false },
+    { value: 'rgba(249, 55, 28, 1)', selected: true },
+    { value: 'rgba(249, 124, 28, 1)', selected: false },
+    { value: 'rgba(249, 200, 28, 1)', selected: false },
+    { value: 'rgba(65, 208, 182, 1)', selected: false },
+    { value: 'rgba(44, 173, 246, 1)', selected: false },
+    { value: 'rgba(101, 98, 252, 1)', selected: false },
   ]);
 
   const handleSelectedColor = (i) => {
@@ -58,28 +62,25 @@ const ColorPicker = ({ handleColor }) => {
     handleColor(colors[i].value);
   };
 
+  setAlpha('rgba(249, 55, 28, 1)', 0.3);
   return (
-    <Wrapper>
+    <Container>
       <StyledLabel>Color</StyledLabel>
       <Colors>
         {colors.map((color, i) => {
           return (
-            <ColorWrapper
-              key={color.value}
+            <Color
               selected={color.selected}
+              key={color.value}
               color={color.value}
-            >
-              <Color
-                color={color.value}
-                onClick={() => {
-                  handleSelectedColor(i);
-                }}
-              />
-            </ColorWrapper>
+              onClick={() => {
+                handleSelectedColor(i);
+              }}
+            />
           );
         })}
       </Colors>
-    </Wrapper>
+    </Container>
   );
 };
 
