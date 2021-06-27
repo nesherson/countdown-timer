@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import Styled, { css } from 'styled-components';
 
+import { setAlpha } from '../../util/helpers';
+
 const Container = Styled.div`
     margin: 25px 0 20px 0;
     display: flex;
@@ -28,17 +30,13 @@ const Color = Styled.div`
         : ''}
 `;
 
-const StyledLabel = Styled.label`
+const Label = Styled.label`
+    color: #4f5a64;
+    font-weight: 600;
     margin: 0 10px 0 0 ;
     padding: 0;
     font-size: 0.9rem;
 `;
-
-const setAlpha = (color, alphaValue) => {
-  let tempColor = color.split(' ');
-  tempColor[3] = `${alphaValue})`;
-  return tempColor.join(' ');
-};
 
 const ColorPicker = ({ handleColor }) => {
   const [colors, setColors] = useState([
@@ -65,7 +63,7 @@ const ColorPicker = ({ handleColor }) => {
   setAlpha('rgba(249, 55, 28, 1)', 0.3);
   return (
     <Container>
-      <StyledLabel>Color</StyledLabel>
+      <Label>Color</Label>
       <Colors>
         {colors.map((color, i) => {
           return (
