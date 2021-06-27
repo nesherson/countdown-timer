@@ -17,8 +17,10 @@ const StyledInput = Styled.input`
   }
 `;
 
-const StyledLabel = Styled.label`
+const Label = Styled.label`
+  color: #4f5a64;
   font-size: 0.9rem;
+  font-weight: 600;
 `;
 
 const DatePicker = ({ date, handleSelectedDate }) => {
@@ -28,7 +30,7 @@ const DatePicker = ({ date, handleSelectedDate }) => {
 
   return (
     <Wrapper>
-      <StyledLabel>Date</StyledLabel>
+      <Label>Date</Label>
       <StyledInput type='date' value={date} onChange={handleSetDate} />
     </Wrapper>
   );

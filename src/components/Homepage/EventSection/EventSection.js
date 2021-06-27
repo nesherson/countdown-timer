@@ -5,6 +5,7 @@ import Card from './Card/Card';
 const Events = Styled.main`
     padding: 25px 45px;
     display: flex;
+    flex-wrap: wrap;
 `;
 
 const StyledH1 = Styled.h1`

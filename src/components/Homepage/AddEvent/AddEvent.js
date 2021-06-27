@@ -20,15 +20,26 @@ const StyledH1 = Styled.h1`
 const Header = Styled.header`
     margin: 0;
     padding: 30px 45px;
-    border-bottom: 1px solid #eaedfa;
+    border-bottom: 1px solid #dce6ef;
     box-sizing: border-box;
     height: 104px;
+    background-color: #edf2f7;
 `;
 
 const CardWrapper = Styled.div`
-    width: 350px;
-    border-radius: 10px;
-    box-shadow: 1px 1px 2px 2px #d9d9d9;
+    width: 420px;
+    border-radius: 12px;
+    background-color: #fff;
+    
+    box-shadow:
+  0 2.8px 2.2px rgba(0, 0, 0, 0.02),
+  0 6.7px 5.3px rgba(0, 0, 0, 0.028),
+  0 12.5px 10px rgba(0, 0, 0, 0.035),
+  0 22.3px 17.9px rgba(0, 0, 0, 0.042),
+  0 41.8px 33.4px rgba(0, 0, 0, 0.05),
+  0 100px 80px rgba(0, 0, 0, 0.07)
+;
+    
 `;
 
 const CardBody = Styled.main`
@@ -37,10 +48,10 @@ const CardBody = Styled.main`
 `;
 
 const StyledHeader = Styled.h2`
-    color: #96a2ac;
+    color: #434d56;
     font-weight: 400;
     border-bottom: 1px solid #96a2ac;
-    padding: 15px 0;
+    padding: 15px 0 10px 0;
     margin-bottom: 25px;
 `;
 
@@ -59,7 +70,7 @@ const Warning = Styled.span`
   font-size: 0.9rem;
 `;
 
-const StyledInput = Styled.input`
+const Input = Styled.input`
   display: block;
   width: 100%;
   margin-bottom: 12px;
@@ -78,7 +89,7 @@ const StyledButton = Styled.button`
   padding: 8px 18px;
   border: none;
   background-color: #2e48cd;
-  border-top: 2px solid  #acb7ec;
+  border-top: 2px solid #acb7ec;
   color: #fff;
   border-radius: 5px;
   font-size: 0.85rem;
@@ -130,7 +141,8 @@ const getTimeBetweenDates = (dateInitial, dateFinal) => {
 const AddEvent = ({ createEvent }) => {
   const [eventName, setEventName] = useState('');
   const [selectedDate, setSelectedDate] = useState('2021-06-12');
-  const [invalidInput, setInvalidInput] = useState(false);
+  const [invalidDate, setInvalidDate] = useState(false);
+  const [invalidName, setInvalidName] = useState(false);
   const [color, setColor] = useState('#f9371c');
 
   const handleEventNameOnChange = (e) => {
@@ -148,18 +160,30 @@ const AddEvent = ({ createEvent }) => {
   const handleEventCreate = () => {
     const currentDate = Date.now();
     const eventTime = getTimeBetweenDates(currentDate, selectedDate);
+
     if (!eventTime) {
-      setInvalidInput(true);
+      setInvalidDate(true);
+      setInvalidName(false);
       return;
     }
+
+    if (eventName.length < 1) {
+      setInvalidName(true);
+      setInvalidDate(false);
+      return;
+    }
+
     console.log('currentDate: ', formatDate(currentDate));
     console.log('selectedDate: ', formatSelectedDate(selectedDate));
     console.log('eventTime: ', eventTime);
 
     createEvent(eventName, eventTime, selectedDate, color);
-    setInvalidInput(false);
+    setInvalidDate(false);
+    setInvalidName(false);
     setEventName('');
   };
+
+  console.log(invalidName);
 
   return (
     <>
@@ -170,7 +194,7 @@ const AddEvent = ({ createEvent }) => {
         <CardWrapper>
           <CardBody>
             <StyledHeader>Create an Event</StyledHeader>
-            <StyledInput
+            <Input
               type='text'
               value={eventName}
               onChange={handleEventNameOnChange}
@@ -181,8 +205,8 @@ const AddEvent = ({ createEvent }) => {
               date={selectedDate}
               handleSelectedDate={handleSelectedDate}
             />
-
-            {invalidInput ? <Warning>Wrong Date!</Warning> : null}
+            {invalidName ? <Warning>Empty Name Input!</Warning> : null}
+            {invalidDate ? <Warning>Wrong Date!</Warning> : null}
           </CardBody>
           <CardFooter>
             <StyledButton onClick={handleEventCreate}>Create</StyledButton>

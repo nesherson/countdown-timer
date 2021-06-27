@@ -7,6 +7,7 @@ import AddEvent from './AddEvent/AddEvent';
 
 const Main = Styled.main`
     margin-left: 20%;
+    background-color: #edf2f7;
 `;
 
 const StyledH1 = Styled.h1`
