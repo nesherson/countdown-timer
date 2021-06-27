@@ -1,24 +1,44 @@
 import { useEffect, useState } from 'react';
 import Styled from 'styled-components';
 
+import { setAlpha } from '../../../../util/helpers';
+
 import Counter from '../../../../UI/Counter/Counter';
 
 const CardWrapper = Styled.div`
     margin-right: 25px;
-    width: 250px;
-    border: 1px solid #96a2ac;
-    padding: 30px 25px 20px 25px;
-    border-radius: 5px;
-    box-shadow: 1px 1px 2px 2px #d9d9d9;
+    margin-top: 50px;
+    min-width: 320px;
+    padding: 35px 25px 30px 25px;
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow:
+  0 2.8px 2.2px ${(props) => setAlpha(props.color, 0.06)},
+  0 6.7px 5.3px ${(props) => setAlpha(props.color, 0.0068)},
+  0 12.5px 10px ${(props) => setAlpha(props.color, 0.0075)},
+  0 22.3px 17.9px ${(props) => setAlpha(props.color, 0.0082)},
+  0 41.8px 33.4px ${(props) => setAlpha(props.color, 0.09)},
+  0 100px 80px ${(props) => setAlpha(props.color, 0.1)}
+;
 `;
+
+/*
+  0 2.8px 2.2px rgba(0, 0, 0, 0.02),
+  0 6.7px 5.3px rgba(0, 0, 0, 0.028),
+  0 12.5px 10px rgba(0, 0, 0, 0.035),
+  0 22.3px 17.9px rgba(0, 0, 0, 0.042),
+  0 41.8px 33.4px rgba(0, 0, 0, 0.05),
+  0 100px 80px rgba(0, 0, 0, 0.07)
+*/
 
 const Timer = Styled.div`
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
 `;
 
 const CardDetails = Styled.div`
     text-align: center;
+    margin-bottom: 20px;
 `;
 
 const StyledHeader = Styled.h2`
@@ -30,7 +50,7 @@ const StyledHeader = Styled.h2`
 
 const EventName = Styled.h3`
     color: #7e8e9a;
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     padding: 0;
     margin: 0;
 `;
@@ -130,10 +150,10 @@ const Card = ({ eventName, eventDate, eventTime, color }) => {
     };
   }, [timerOver]);
 
-  console.log('Card/time --> ', time);
+  console.log('Card/color --> ', color);
 
   return (
-    <CardWrapper>
+    <CardWrapper color={color}>
       <Timer>
         <Counter value={time.days} name='days' color={color} />
         <Counter value={time.hours} name='hours' color={color} />
