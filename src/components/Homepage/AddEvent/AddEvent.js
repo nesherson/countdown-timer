@@ -5,32 +5,15 @@ import DatePicker from '../../../UI/DatePicker/DatePicker';
 import ColorPicker from '../../../UI/ColorPicker/ColorPicker';
 
 const StyledDiv = Styled.div`
-  width: 100%;
-  height: calc(100vh - 104px);
+  padding-top: 100px;
   display: flex;
   justify-content: center;
-  align-items: center;
-`;
-
-const StyledH1 = Styled.h1`
-    margin: 0;
-    padding: 0;
-`;
-
-const Header = Styled.header`
-    margin: 0;
-    padding: 30px 45px;
-    border-bottom: 1px solid #dce6ef;
-    box-sizing: border-box;
-    height: 104px;
-    background-color: #edf2f7;
 `;
 
 const CardWrapper = Styled.div`
     width: 420px;
     border-radius: 12px;
     background-color: #fff;
-    
     box-shadow:
   0 2.8px 2.2px rgba(0, 0, 0, 0.02),
   0 6.7px 5.3px rgba(0, 0, 0, 0.028),
@@ -38,13 +21,23 @@ const CardWrapper = Styled.div`
   0 22.3px 17.9px rgba(0, 0, 0, 0.042),
   0 41.8px 33.4px rgba(0, 0, 0, 0.05),
   0 100px 80px rgba(0, 0, 0, 0.07)
-;
-    
+;    
+
+    @media only screen and (max-width: 510px) {
+      width: 100%;
+      margin: 0 3%;
+    }
 `;
 
-const CardBody = Styled.main`
-    height: 80%;
+const CardBody = Styled.div`
+    height: 75%;
     padding: 10px 35px 30px 35px;
+    @media only screen and (max-width: 768px) {
+      padding: 10px 7% 30px 7%;
+    }
+    @media only screen and (max-width: 510px) {
+      padding: 10px 5% 30px 5%;
+    }
 `;
 
 const StyledHeader = Styled.h2`
@@ -57,11 +50,11 @@ const StyledHeader = Styled.h2`
 
 const CardFooter = Styled.footer`
     border-top: 1px solid #eaedfa;
-    height: 17%;
+    height: 10%;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    padding: 15px 35px 15px 35px;
+    padding: 10px 35px 10px 35px;
 `;
 
 const Warning = Styled.span`
@@ -85,14 +78,14 @@ const Input = Styled.input`
   }
 `;
 
-const StyledButton = Styled.button`
+const Button = Styled.button`
   padding: 8px 18px;
   border: none;
   background-color: #2e48cd;
-  border-top: 2px solid #acb7ec;
+  border-top: 1px solid #acb7ec;
   color: #fff;
   border-radius: 5px;
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   font-weight: 500;
 `;
 
@@ -138,7 +131,7 @@ const getTimeBetweenDates = (dateInitial, dateFinal) => {
   );
 };
 
-const AddEvent = ({ createEvent }) => {
+const AddEvent = ({ createEvent, handleShowSidebar }) => {
   const [eventName, setEventName] = useState('');
   const [selectedDate, setSelectedDate] = useState('2021-06-12');
   const [invalidDate, setInvalidDate] = useState(false);
@@ -173,23 +166,14 @@ const AddEvent = ({ createEvent }) => {
       return;
     }
 
-    console.log('currentDate: ', formatDate(currentDate));
-    console.log('selectedDate: ', formatSelectedDate(selectedDate));
-    console.log('eventTime: ', eventTime);
-
     createEvent(eventName, eventTime, selectedDate, color);
     setInvalidDate(false);
     setInvalidName(false);
     setEventName('');
   };
 
-  console.log(invalidName);
-
   return (
     <>
-      <Header>
-        <StyledH1>Add Event</StyledH1>
-      </Header>
       <StyledDiv>
         <CardWrapper>
           <CardBody>
@@ -209,7 +193,7 @@ const AddEvent = ({ createEvent }) => {
             {invalidDate ? <Warning>Wrong Date!</Warning> : null}
           </CardBody>
           <CardFooter>
-            <StyledButton onClick={handleEventCreate}>Create</StyledButton>
+            <Button onClick={handleEventCreate}>Create</Button>
           </CardFooter>
         </CardWrapper>
       </StyledDiv>
