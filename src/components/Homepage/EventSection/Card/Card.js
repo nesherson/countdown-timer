@@ -6,30 +6,34 @@ import { setAlpha } from '../../../../util/helpers';
 import Counter from '../../../../UI/Counter/Counter';
 
 const CardWrapper = Styled.div`
-    margin-right: 25px;
-    margin-top: 50px;
-    min-width: 320px;
+    margin: 25px 25px 0 0;
+    min-width: 300px;
+    max-width: 320px;
+    height: 300px;
     padding: 35px 25px 30px 25px;
     border-radius: 12px;
     background-color: #fff;
     box-shadow:
-  0 2.8px 2.2px ${(props) => setAlpha(props.color, 0.06)},
-  0 6.7px 5.3px ${(props) => setAlpha(props.color, 0.0068)},
-  0 12.5px 10px ${(props) => setAlpha(props.color, 0.0075)},
-  0 22.3px 17.9px ${(props) => setAlpha(props.color, 0.0082)},
-  0 41.8px 33.4px ${(props) => setAlpha(props.color, 0.09)},
-  0 100px 80px ${(props) => setAlpha(props.color, 0.1)}
+  0 2.8px 2.2px ${(props) => setAlpha(props.color, 0.08)},
+  0 6.7px 5.3px ${(props) => setAlpha(props.color, 0.0088)},
+  0 12.5px 10px ${(props) => setAlpha(props.color, 0.0095)},
+  0 22.3px 17.9px ${(props) => setAlpha(props.color, 0.0102)},
+  0 41.8px 33.4px ${(props) => setAlpha(props.color, 0.011)},
+  0 100px 80px ${(props) => setAlpha(props.color, 0.12)}
 ;
-`;
 
-/*
-  0 2.8px 2.2px rgba(0, 0, 0, 0.02),
-  0 6.7px 5.3px rgba(0, 0, 0, 0.028),
-  0 12.5px 10px rgba(0, 0, 0, 0.035),
-  0 22.3px 17.9px rgba(0, 0, 0, 0.042),
-  0 41.8px 33.4px rgba(0, 0, 0, 0.05),
-  0 100px 80px rgba(0, 0, 0, 0.07)
-*/
+    @media only screen and (max-width: 768px) {
+      margin: 25px 5% 0 5%;
+      padding: 35px 3% 30px 3%;
+    }
+
+    @media only screen and (max-width: 480px) {
+      margin: 25px 7px 0 7px;
+      padding: 35px 2% 30px 2%;
+    }
+   
+  
+`;
 
 const Timer = Styled.div`
     display: flex;
@@ -149,8 +153,6 @@ const Card = ({ eventName, eventDate, eventTime, color }) => {
       clearInterval(intervalId);
     };
   }, [timerOver]);
-
-  console.log('Card/color --> ', color);
 
   return (
     <CardWrapper color={color}>
