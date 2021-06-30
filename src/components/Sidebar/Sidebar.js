@@ -1,31 +1,30 @@
-import Styled from 'styled-components';
+import Styled, { css } from 'styled-components';
 import { Link } from 'wouter';
 
 const Aside = Styled.aside`
-    box-sizing: border-box;
-    width: 20%;
-    min-width: 220px;
-    background-color: #2e48cd;
+    grid-row-start: 1;
+    grid-row-end: end;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    background: rgb(12,28,63);
+    background: linear-gradient(90deg, rgba(12,28,63,1) 10%, rgba(16,38,76,1) 39%, rgba(22,54,96,0.9808123933167017) 98%);
     color: #f4f4f4;
-    position: fixed;
-    height: 100%;
-    transition: background-color 0.2s ease;
-    @media (max-width: 768px) {
-        display: none;
+
+    @media only screen and (max-width: 768px) {
+      display: none;
     }
 `;
 
 const LogoWrapper = Styled.div`
-    background-color:#596ed9;
-    color: #f4f4f4;
-    height: 104px;
+    background: rgb(12,28,63);
+    background: linear-gradient(90deg, rgba(12,28,63,1) 10%, rgba(16,38,76,1) 39%, rgba(22,54,96,0.9808123933167017) 98%);
     box-sizing: border-box;
 `;
 
-const StyledHeader = Styled.h2`
+const Logo = Styled.h2`
     margin: 0;
-    padding: 30px 45px;
-    
+    padding: 25px 35px;
+    color: #fff;
 `;
 
 const NavigationList = Styled.ul`
@@ -41,9 +40,11 @@ const Navigation = Styled.nav`
 const ListItem = Styled.li`
     padding: 10px 7px;
     font-size: 1.15rem;
-    border-radius: 5px;
     &:hover {
-        background-color: #1a2b81;
+        border-left: 3px solid #4681ea;
+    }
+    &.active {
+      border-left: 3px solid #4681ea;
     }
 `;
 
@@ -56,7 +57,7 @@ const Sidebar = () => {
   return (
     <Aside>
       <LogoWrapper>
-        <StyledHeader>LOGO</StyledHeader>
+        <Logo>LOGO</Logo>
       </LogoWrapper>
       <Navigation>
         <NavigationList>
