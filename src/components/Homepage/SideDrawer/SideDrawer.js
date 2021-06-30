@@ -1,6 +1,6 @@
 import { createPortal } from 'react-dom';
 import Styled, { css } from 'styled-components';
-import { Link } from 'wouter';
+import { NavLink } from 'react-router-dom';
 
 const Backdrop = Styled.div`
     position: fixed;
@@ -41,8 +41,6 @@ const Aside = Styled.aside`
 `;
 
 const LogoWrapper = Styled.div`
-    background: rgb(12,28,63);
-    background: linear-gradient(90deg, rgba(12,28,63,1) 10%, rgba(16,38,76,1) 39%, rgba(22,54,96,0.9808123933167017) 98%);
     box-sizing: border-box;
 `;
 
@@ -63,23 +61,20 @@ const Navigation = Styled.nav`
 `;
 
 const ListItem = Styled.li`
-    padding: 10px 7px;
     font-size: 1.15rem;
+    margin: 15px 0;
+`;
+
+const StyledLink = Styled(NavLink)`
+  text-decoration: none;
+  color: #fff;
+  padding: 7px;
     &:hover {
         border-left: 3px solid #4681ea;
     }
     &.active {
-      border-left: 3px solid #4681ea;
+    border-left: 3px solid #8cb2f2;
     }
-
-
-`;
-
-const StyledLink = Styled(Link)`
-  text-decoration: none;
-  color: #fff;
- 
- 
 `;
 
 const SideDrawer = ({ show, toggle }) => {
@@ -92,19 +87,18 @@ const SideDrawer = ({ show, toggle }) => {
             e.stopPropagation();
           }}
         >
-          <LogoWrapper>
-            <Logo>LOGO</Logo>
-          </LogoWrapper>
+          <Logo>LOGO</Logo>
+
           <Navigation>
             <NavigationList>
               <ListItem>
-                <StyledLink href='/events'>Events</StyledLink>
+                <StyledLink to='/events'>Events</StyledLink>
               </ListItem>
               <ListItem>
-                <StyledLink href='/add-event'>Add Event</StyledLink>
+                <StyledLink to='/add-event'>Add Event</StyledLink>
               </ListItem>
               <ListItem>
-                <StyledLink href='/options'>Options</StyledLink>
+                <StyledLink to='/options'>Options</StyledLink>
               </ListItem>
             </NavigationList>
           </Navigation>

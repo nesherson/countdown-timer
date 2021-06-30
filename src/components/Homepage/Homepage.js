@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Route } from 'wouter';
+import { Switch, Route } from 'react-router-dom';
 import Styled from 'styled-components';
 
 import Sidebar from '../Sidebar/Sidebar';
@@ -82,15 +82,17 @@ const Homepage = () => {
       <SideDrawer show={showSideDrawer} toggle={handleToggleSideDrawer} />
 
       <Main>
-        <Route path='/events'>
-          <EventSection events={events} />
-        </Route>
-        <Route path='/add-event'>
-          <AddEvent createEvent={handleCreateEvent} />
-        </Route>
-        <Route path='/options'>
-          <Headline>Nothing Here!</Headline>
-        </Route>
+        <Switch>
+          <Route path='/events'>
+            <EventSection events={events} />
+          </Route>
+          <Route path='/add-event'>
+            <AddEvent createEvent={handleCreateEvent} />
+          </Route>
+          <Route path='/options'>
+            <Headline>Nothing Here!</Headline>
+          </Route>
+        </Switch>
       </Main>
     </Container>
   );
