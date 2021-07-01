@@ -1,6 +1,8 @@
 import Styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
+import EventIcon from '../../Assets/icons/Event';
+
 const Aside = Styled.aside`
     grid-row-start: 1;
     grid-row-end: end;
@@ -15,15 +17,35 @@ const Aside = Styled.aside`
     }
 `;
 
-const Logo = Styled.h2`
+const LogoWrapper = Styled.div`
+    padding: 35px 0 0 15px;
+`;
+
+const LogoIcon = Styled.div`
+    display: inline-block;
+    padding: 0 10px;
+`;
+
+const LogoTextFirst = Styled.h2`
     margin: 0;
-    padding: 25px 35px;
+    padding: 0;
     color: #fff;
+    display: inline-block;
+    line-height: 0.3em;
+    font-size: 1.55rem;
+`;
+
+const LogoTextSecond = Styled.h2`
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    font-size: 1.65rem;
+    line-height: 0.7em;
 `;
 
 const NavigationList = Styled.ul`
     list-style: none;
-    margin: 0;
+    margin: 25px 0 0 0;
     padding: 0;
 `;
 
@@ -51,7 +73,13 @@ const StyledLink = Styled(NavLink)`
 const Sidebar = () => {
   return (
     <Aside>
-      <Logo>LOGO</Logo>
+      <LogoWrapper>
+        <LogoIcon>
+          <EventIcon width={38} height={36} />
+        </LogoIcon>
+        <LogoTextFirst>Event</LogoTextFirst>
+        <LogoTextSecond>Countdown</LogoTextSecond>
+      </LogoWrapper>
       <Navigation>
         <NavigationList>
           <ListItem>

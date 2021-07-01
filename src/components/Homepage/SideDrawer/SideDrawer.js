@@ -2,6 +2,8 @@ import { createPortal } from 'react-dom';
 import Styled, { css } from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
+import EventIcon from '../../../Assets/icons/Event';
+
 const Backdrop = Styled.div`
     position: fixed;
     left: 0;
@@ -41,13 +43,30 @@ const Aside = Styled.aside`
 `;
 
 const LogoWrapper = Styled.div`
-    box-sizing: border-box;
+    //padding: 35px 0 0 15px;
+    padding: 25px 3px 0 5px;
 `;
 
-const Logo = Styled.h2`
+const LogoIcon = Styled.div`
+    display: inline-block;
+    padding: 0 5px;
+`;
+
+const LogoTextFirst = Styled.h2`
     margin: 0;
-    padding: 25px 35px;
+    padding: 0;
     color: #fff;
+    display: inline-block;
+    line-height: 0.3em;
+
+`;
+
+const LogoTextSecond = Styled.h2`
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    font-size: 1.4rem;
+    line-height: 0.7em;
 `;
 
 const NavigationList = Styled.ul`
@@ -87,7 +106,13 @@ const SideDrawer = ({ show, toggle }) => {
             e.stopPropagation();
           }}
         >
-          <Logo>LOGO</Logo>
+          <LogoWrapper>
+            <LogoIcon>
+              <EventIcon width={34} height={32} />
+            </LogoIcon>
+            <LogoTextFirst>Event</LogoTextFirst>
+            <LogoTextSecond>Countdown</LogoTextSecond>
+          </LogoWrapper>
 
           <Navigation>
             <NavigationList>
