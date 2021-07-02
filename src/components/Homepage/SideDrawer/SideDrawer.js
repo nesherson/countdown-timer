@@ -43,7 +43,6 @@ const Aside = Styled.aside`
 `;
 
 const LogoWrapper = Styled.div`
-    //padding: 35px 0 0 15px;
     padding: 25px 3px 0 5px;
 `;
 
@@ -58,7 +57,6 @@ const LogoTextFirst = Styled.h2`
     color: #fff;
     display: inline-block;
     line-height: 0.3em;
-
 `;
 
 const LogoTextSecond = Styled.h2`
@@ -71,7 +69,7 @@ const LogoTextSecond = Styled.h2`
 
 const NavigationList = Styled.ul`
     list-style: none;
-    margin: 0;
+    margin: 30px 0 0 0 ;
     padding: 0;
 `;
 

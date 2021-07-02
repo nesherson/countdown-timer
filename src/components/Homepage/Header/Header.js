@@ -1,4 +1,8 @@
+import { useLocation } from 'react-router-dom';
+
 import Styled from 'styled-components';
+
+import { trimString } from '../../../util/helpers';
 
 import DrawerToggle from './DrawerToggle/DrawerToggle';
 
@@ -6,6 +10,9 @@ const Headline = Styled.h1`
     margin: 0 0 0 25px;
     padding: 0;
     color: rgb(12,28,63);
+    text-transform: capitalize;
+    font-weight: 500;
+    font-size: 1.9rem;
 `;
 
 const Container = Styled.header`
@@ -49,11 +56,13 @@ const Wrapper = Styled.div`
 `;
 
 const Header = ({ toggle }) => {
+  const currentLocation = trimString(useLocation().pathname);
+
   return (
     <Container>
       <Wrapper>
         <DrawerToggle click={toggle} />
-        <Headline>Add Event</Headline>
+        <Headline>{currentLocation}</Headline>
       </Wrapper>
     </Container>
   );
