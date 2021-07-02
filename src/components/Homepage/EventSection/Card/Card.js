@@ -73,18 +73,11 @@ const StyledSpan = Styled.span`
     display: block;
 `;
 
-const testTime = {
-  days: 1,
-  hours: 1,
-  minutes: 1,
-  seconds: 10,
-};
-
 const SECOND = 1;
 const MINUTE = 1;
 const HOUR = 1;
 const DAY = 1;
-const intervalSpeed = 650;
+const INTERVAL_SPEED = 650;
 
 const Card = ({ eventName, eventDate, eventTime, color }) => {
   const [time, setTime] = useState(eventTime);
@@ -142,10 +135,9 @@ const Card = ({ eventName, eventDate, eventTime, color }) => {
 
     const intervalId = setInterval(() => {
       setTime((prevState) => updateTime(prevState));
-    }, intervalSpeed);
+    }, INTERVAL_SPEED);
 
     if (timerOver) {
-      console.log('clear --> ', time);
       clearInterval(intervalId);
     }
 

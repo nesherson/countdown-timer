@@ -131,12 +131,12 @@ const getTimeBetweenDates = (dateInitial, dateFinal) => {
   );
 };
 
-const AddEvent = ({ createEvent, handleShowSidebar }) => {
+const AddEvent = ({ createEvent }) => {
   const [eventName, setEventName] = useState('');
-  const [selectedDate, setSelectedDate] = useState('2021-06-12');
+  const [selectedDate, setSelectedDate] = useState('');
   const [invalidDate, setInvalidDate] = useState(false);
   const [invalidName, setInvalidName] = useState(false);
-  const [color, setColor] = useState('#f9371c');
+  const [color, setColor] = useState('rgba(249, 55, 28, 1)');
 
   const handleEventNameOnChange = (e) => {
     setEventName(e.target.value);
