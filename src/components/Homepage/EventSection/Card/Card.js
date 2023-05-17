@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
-import Styled from 'styled-components';
+import { useEffect, useState } from "react";
+import Styled from "styled-components";
 
-import { setAlpha } from '../../../../util/helpers';
+import { setAlpha } from "../../../../util/helpers";
 
-import Counter from '../../../../UI/Counter/Counter';
+import Counter from "../../../../UI/Counter/Counter";
+import styled from "styled-components";
 
 const CardWrapper = Styled.div`
     margin: 25px 25px 0 0;
@@ -14,12 +15,8 @@ const CardWrapper = Styled.div`
     border-radius: 12px;
     background-color: #fff;
     box-shadow:
-  0 2.8px 2.2px ${(props) => setAlpha(props.color, 0.08)},
-  0 6.7px 5.3px ${(props) => setAlpha(props.color, 0.0088)},
-  0 12.5px 10px ${(props) => setAlpha(props.color, 0.0095)},
-  0 22.3px 17.9px ${(props) => setAlpha(props.color, 0.0102)},
-  0 41.8px 33.4px ${(props) => setAlpha(props.color, 0.011)},
-  0 100px 80px ${(props) => setAlpha(props.color, 0.12)}
+  0px 2px 6px -9px ${(props) => setAlpha(props.color, 0.18)},
+  0px 2px 20px -9px ${(props) => setAlpha(props.color, 0.24)}
 ;
 
     @media only screen and (max-width: 768px) {
@@ -73,14 +70,21 @@ const StyledSpan = Styled.span`
     display: block;
 `;
 
+const CardFooter = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 const SECOND = 1;
 const MINUTE = 1;
 const HOUR = 1;
 const DAY = 1;
 const INTERVAL_SPEED = 650;
 
-const Card = ({ eventName, eventDate, eventTime, color }) => {
-  const [time, setTime] = useState(eventTime);
+const Card = ({ event, deleteEvent }) => {
+  const { id, name, date, time, color } = event;
+
+  const [eventTime, setEventTime] = useState(time);
   const [timerOver, setTimerOver] = useState(false);
 
   useEffect(() => {
@@ -134,7 +138,7 @@ const Card = ({ eventName, eventDate, eventTime, color }) => {
     };
 
     const intervalId = setInterval(() => {
-      setTime((prevState) => updateTime(prevState));
+      setEventTime((prevState) => updateTime(prevState));
     }, INTERVAL_SPEED);
 
     if (timerOver) {
@@ -146,20 +150,27 @@ const Card = ({ eventName, eventDate, eventTime, color }) => {
     };
   }, [timerOver]);
 
+  const handleOnDelete = (e) => {
+    deleteEvent(id);
+  };
+
   return (
     <CardWrapper color={color}>
       <Timer>
-        <Counter value={time.days} name='days' color={color} />
-        <Counter value={time.hours} name='hours' color={color} />
-        <Counter value={time.minutes} name='minutes' color={color} />
-        <Counter value={time.seconds} name='seconds' color={color} />
+        <Counter value={eventTime.days} name="days" color={color} />
+        <Counter value={eventTime.hours} name="hours" color={color} />
+        <Counter value={eventTime.minutes} name="minutes" color={color} />
+        <Counter value={eventTime.seconds} name="seconds" color={color} />
       </Timer>
       <CardDetails>
         <StyledHeader>Countdown to:</StyledHeader>
-        <EventName>{eventName}</EventName>
-        <Date>{eventDate}</Date>
+        <EventName>{name}</EventName>
+        <Date>{date}</Date>
       </CardDetails>
-      <StyledSpan>Options</StyledSpan>
+      <CardFooter>
+        <StyledSpan>Options</StyledSpan>
+        <StyledSpan onClick={handleOnDelete}>Delete</StyledSpan>
+      </CardFooter>
     </CardWrapper>
   );
 };

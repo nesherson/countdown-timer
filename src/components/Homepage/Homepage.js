@@ -74,6 +74,12 @@ const Homepage = () => {
     setEvents(updatedEvents);
   };
 
+  const deleteEvent = (eventId) => {
+    console.log("homepage/delete/eventId -> ", eventId);
+    setEvents(events.filter(e => e.id !== eventId));
+    console.log(events);
+  } 
+
   return (
     <Container>
       <Header toggle={handleToggleSideDrawer} />
@@ -84,7 +90,7 @@ const Homepage = () => {
       <Main>
         <Switch>
           <Route path='/events'>
-            <EventSection events={events} />
+            <EventSection events={events} deleteEvent={deleteEvent} />
           </Route>
           <Route path='/add-event'>
             <AddEvent createEvent={handleCreateEvent} />

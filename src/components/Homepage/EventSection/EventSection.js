@@ -14,21 +14,17 @@ const Events = Styled.div`
     @media only screen and (max-width: 480px) {
       padding: 15px 0;
     }
-    
 `;
 
-const EventSection = ({ events }) => {
+const EventSection = ({ events, deleteEvent }) => {
   return (
     <>
       <Events>
         {events.map((event) => {
           return (
             <Card
-              key={event.id}
-              eventName={event.name}
-              eventDate={event.date}
-              eventTime={event.time}
-              color={event.color}
+              event={event}
+              deleteEvent={deleteEvent}
             />
           );
         })}
