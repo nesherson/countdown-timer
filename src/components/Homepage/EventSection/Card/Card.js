@@ -10,8 +10,7 @@ const CardWrapper = Styled.div`
     margin: 25px 25px 0 0;
     min-width: 300px;
     max-width: 320px;
-    height: 300px;
-    padding: 35px 25px 30px 25px;
+    padding: 30px 25px 30px 25px;
     border-radius: 12px;
     background-color: #fff;
     box-shadow:
@@ -28,8 +27,6 @@ const CardWrapper = Styled.div`
       margin: 25px 7px 0 7px;
       padding: 35px 2% 30px 2%;
     }
-   
-  
 `;
 
 const Timer = Styled.div`
@@ -45,8 +42,9 @@ const CardDetails = Styled.div`
 const StyledHeader = Styled.h2`
     color: #96a2ac;
     font-weight: 400;
-    border-bottom: 1px solid #96a2ac;
+    border-top: 1px solid #96a2ac;
     padding: 15px 0;
+    margin: 0;
 `;
 
 const EventName = Styled.h3`
@@ -64,10 +62,16 @@ const Date = Styled.span`
      padding: 0 0 15px 0;
 `;
 
-const StyledSpan = Styled.span`
+const Button = Styled.button`
     color: #96a2ac;
-    padding: 15px 0 0 0;
-    display: block;
+    border: none;
+    background: transparent;
+    font-size: 1rem;
+    cursor: pointer;
+
+    &:hover {
+      color: #7e8e9a;
+  }
 `;
 
 const CardFooter = styled.div`
@@ -168,8 +172,8 @@ const Card = ({ event, deleteEvent }) => {
         <Date>{date}</Date>
       </CardDetails>
       <CardFooter>
-        <StyledSpan>Options</StyledSpan>
-        <StyledSpan onClick={handleOnDelete}>Delete</StyledSpan>
+        <Button>Edit</Button>
+        <Button onClick={handleOnDelete}>Delete</Button>
       </CardFooter>
     </CardWrapper>
   );
