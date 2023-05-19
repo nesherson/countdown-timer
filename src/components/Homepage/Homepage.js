@@ -1,12 +1,11 @@
-import { useState } from 'react';
-import { Switch, Route } from 'react-router-dom';
-import Styled from 'styled-components';
+import { useState } from "react";
+import { createPortal } from "react-dom";
+import Styled from "styled-components";
 
-import Sidebar from '../Sidebar/Sidebar';
-import Header from './Header/Header';
-import EventSection from './EventSection/EventSection';
-import AddEvent from './AddEvent/AddEvent';
-import SideDrawer from './SideDrawer/SideDrawer';
+import Header from "./Header/Header";
+import EventSection from "./EventSection/EventSection";
+import AddEvent from "./AddEvent/AddEvent";
+import DialogModal from "../../UI/dialog/DialogModal";
 
 const Container = Styled.div`
   position: relative;
@@ -20,18 +19,11 @@ const Container = Styled.div`
     } 
 `;
 
-const Headline = Styled.h1`
-    margin: 0 0 0 25px;
-    padding: 0;
-    color: rgb(12,28,63);
-`;
-
 const Main = Styled.main`
-
     grid-row-start: 2;
     grid-row-end: end;
 
-    grid-column-start: 2;
+    grid-column-start: 1;
     grid-column-end: 6;
 
     transition: 2s;
@@ -45,11 +37,7 @@ const Main = Styled.main`
 
 const Homepage = () => {
   const [events, setEvents] = useState([]);
-  const [showSideDrawer, setShowSideDrawer] = useState(false);
-
-  const handleToggleSideDrawer = () => {
-    setShowSideDrawer((prevState) => !prevState);
-  };
+  const [isAddEventModalOpen, setIsAddEventModalOpen] = useState(false);
 
   const handleCreateEvent = (
     eventName,
@@ -59,9 +47,9 @@ const Homepage = () => {
   ) => {
     const id = `${Math.random()}${eventName}`;
     const updatedDate = new Date(selectedDate).toLocaleDateString(undefined, {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
     const event = {
       id: id,
@@ -74,28 +62,38 @@ const Homepage = () => {
     setEvents(updatedEvents);
   };
 
-  const deleteEvent = (eventId) => {
-    setEvents(events.filter(e => e.id !== eventId));
-  } 
+  const handleDeleteEvent = (eventId) => {
+    setEvents(events.filter((e) => e.id !== eventId));
+  };
+
+  const handleOpenddEventModal = () => {
+    setIsAddEventModalOpen(true);
+  }
+
+  const handleCloseAddEventModal = () => {
+    setIsAddEventModalOpen(false);
+  }
 
   return (
     <Container>
-      <Header toggle={handleToggleSideDrawer} />
-      <Sidebar />
-      <SideDrawer show={showSideDrawer} toggle={handleToggleSideDrawer} />
+      <Header 
+        openAddEventModal={handleOpenddEventModal}
+        />
       <Main>
-        <Switch>
-          <Route path='/events'>
-            <EventSection events={events} deleteEvent={deleteEvent} />
-          </Route>
-          <Route path='/add-event'>
-            <AddEvent createEvent={handleCreateEvent} />
-          </Route>
-          <Route path='/options'>
-            <Headline>Nothing Here!</Headline>
-          </Route>
-        </Switch>
+        <EventSection
+          events={events}
+          deleteEvent={handleDeleteEvent}
+        />
       </Main>
+      {createPortal(
+        <DialogModal
+          title="Create an Event"
+          isOpen={isAddEventModalOpen}
+        >
+           <AddEvent closeModal={handleCloseAddEventModal} createEvent={handleCreateEvent} />
+        </DialogModal>,
+        document.body
+      )}
     </Container>
   );
 };

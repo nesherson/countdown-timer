@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+
 import Styled from "styled-components";
 
 import { setAlpha } from "../../../../util/helpers";
 
 import Counter from "../../../../UI/Counter/Counter";
-import styled from "styled-components";
+import DialogModal from "../../../../UI/dialog/DialogModal";
 
 const CardWrapper = Styled.div`
     margin: 25px 25px 0 0;
@@ -62,19 +64,23 @@ const Date = Styled.span`
      padding: 0 0 15px 0;
 `;
 
-const Button = Styled.button`
-    color: #96a2ac;
-    border: none;
-    background: transparent;
-    font-size: 1rem;
-    cursor: pointer;
+const ButtonGhost = Styled.button`
+  padding: 8px 18px;
+  border: none;
+  background-color: transparent;
+  border: 1px solid #acb7ec;
+  color: #000;
+  border-radius: 5px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
 
-    &:hover {
-      color: #7e8e9a;
+  &:hover {
+    background-color: #acb7ec;
   }
 `;
 
-const CardFooter = styled.div`
+const CardFooter = Styled.div`
   display: flex;
   justify-content: space-between;
 `;
@@ -90,6 +96,8 @@ const Card = ({ event, deleteEvent }) => {
 
   const [eventTime, setEventTime] = useState(time);
   const [timerOver, setTimerOver] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
 
   useEffect(() => {
     const updateTime = (time) => {
@@ -159,23 +167,35 @@ const Card = ({ event, deleteEvent }) => {
   };
 
   return (
-    <CardWrapper color={color}>
-      <Timer>
-        <Counter value={eventTime.days} name="days" color={color} />
-        <Counter value={eventTime.hours} name="hours" color={color} />
-        <Counter value={eventTime.minutes} name="minutes" color={color} />
-        <Counter value={eventTime.seconds} name="seconds" color={color} />
-      </Timer>
-      <CardDetails>
-        <StyledHeader>Countdown to:</StyledHeader>
-        <EventName>{name}</EventName>
-        <Date>{date}</Date>
-      </CardDetails>
-      <CardFooter>
-        <Button>Edit</Button>
-        <Button onClick={handleOnDelete}>Delete</Button>
-      </CardFooter>
-    </CardWrapper>
+    <>
+      <CardWrapper color={color}>
+        <Timer>
+          <Counter value={eventTime.days} name="days" color={color} />
+          <Counter value={eventTime.hours} name="hours" color={color} />
+          <Counter value={eventTime.minutes} name="minutes" color={color} />
+          <Counter value={eventTime.seconds} name="seconds" color={color} />
+        </Timer>
+        <CardDetails>
+          <StyledHeader>Countdown to:</StyledHeader>
+          <EventName>{name}</EventName>
+          <Date>{date}</Date>
+        </CardDetails>
+        <CardFooter>
+          <ButtonGhost onClick={() => setIsOpen(true)}>Edit</ButtonGhost>
+          <ButtonGhost onClick={handleOnDelete}>Delete</ButtonGhost>
+        </CardFooter>
+      </CardWrapper>
+      {createPortal(
+        <DialogModal
+          title="Dialog"
+          isOpen={isOpen}
+          onProceed={() => {}}
+          onClose={() => setIsOpen(false)}
+        >
+        </DialogModal>,
+        document.body
+      )}
+    </>
   );
 };
 

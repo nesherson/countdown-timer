@@ -3,7 +3,3 @@ export const setAlpha = (color, alphaValue) => {
   tempColor[3] = `${alphaValue})`;
   return tempColor.join(' ');
 };
-
-export const trimString = (str) => {
-  return str.split('-').join(' ').slice(1);
-};

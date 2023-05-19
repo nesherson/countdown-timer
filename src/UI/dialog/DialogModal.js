@@ -6,15 +6,10 @@ const Container = styled.dialog`
   width: 400px;
   border-radius: 8px;
   border: 1px solid #888;
-
+  padding: 26px 16px;
   ::backdrop {
     background: rgba(0, 0, 0, 0.3);
   }
-`;
-
-const Buttons = styled.div`
-  display: flex;
-  gap: 20px;
 `;
 
 function isClickInsideRectangle(e, element) {
@@ -28,7 +23,7 @@ function isClickInsideRectangle(e, element) {
   );
 }
 
-function DialogModal({ title, isOpen, onProceed, onClose, children }) {
+function DialogModal({ isOpen, onClose, children }) {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -41,11 +36,6 @@ function DialogModal({ title, isOpen, onProceed, onClose, children }) {
     }
   }, [isOpen]);
 
-  const proceedAndClose = () => {
-    onProceed();
-    onClose();
-  };
-
   return (
     <Container
       ref={ref}
@@ -54,12 +44,7 @@ function DialogModal({ title, isOpen, onProceed, onClose, children }) {
         !ref.current && !isClickInsideRectangle(e, ref.current) && onClose()
       }
     >
-      <h3>{title}</h3>
       {children}
-      <Buttons>
-        <button onClick={proceedAndClose}>Proceed</button>
-        <button onClick={onClose}>Close</button>
-      </Buttons>
     </Container>
   );
 }

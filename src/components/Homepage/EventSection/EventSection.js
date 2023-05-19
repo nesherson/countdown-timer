@@ -1,9 +1,6 @@
-import { useState } from 'react';
+import Styled from "styled-components";
 
-import Styled from 'styled-components';
-
-import Card from './Card/Card';
-import DialogModal from '../../../UI/dialog/DialogModal';
+import Card from "./Card/Card";
 
 const Events = Styled.div`
     padding: 15px 3%;
@@ -19,32 +16,14 @@ const Events = Styled.div`
     }
 `;
 
-
-const EventSection = ({ events, deleteEvent }) => {
-const [isOpen, setIsOpen] = useState(false);
-
+function EventSection({ events, deleteEvent }) {
   return (
     <>
       <Events>
         {events.map((event) => {
-          return (
-            <Card
-              event={event}
-              deleteEvent={deleteEvent}
-            />
-          );
+          return <Card event={event} deleteEvent={deleteEvent}/>;
         })}
       </Events>
-      <button onClick={() => setIsOpen(true)}>Open</button>
-      <DialogModal
-        title="Dialog"
-        isOpen={isOpen}
-        onProceed={() => {}}
-        onClose={() => setIsOpen(false)}
-
-      >
-        <div>test</div>
-      </DialogModal>
     </>
   );
 };
