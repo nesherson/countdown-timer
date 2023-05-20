@@ -6,21 +6,23 @@ const Wrapper = Styled.div`
 
 const StyledInput = Styled.input`
   width: 100%;
-  padding: 8px 0;
+  padding: 8px;
   font-size: 1rem;
-  margin: 10px 0;
-  border-radius: 5px;
-  border: 2px solid #96a2ac;
+  border: 1px solid rgba(184, 192, 199, 0.6);
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: #767688;
+
   &:focus {
+    border: 1px solid rgba(46, 72, 205, 0.6);
     outline: none;
-    border-color: #2e48cd;
   }
 `;
 
 const Label = Styled.label`
   color: #4f5a64;
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 500;
 `;
 
 const DatePicker = ({ date, handleSelectedDate }) => {

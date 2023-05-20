@@ -3,10 +3,10 @@ import { useRef, useEffect } from "react";
 import styled from "styled-components";
 
 const Container = styled.dialog`
-  width: 400px;
+  max-width: 520px;
   border-radius: 8px;
   border: 1px solid #888;
-  padding: 26px 16px;
+  padding: 0;
   ::backdrop {
     background: rgba(0, 0, 0, 0.3);
   }

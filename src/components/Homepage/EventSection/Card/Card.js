@@ -1,18 +1,16 @@
-import { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
+import { useEffect, useState, Fragment } from "react";
 
 import Styled from "styled-components";
 
 import { setAlpha } from "../../../../util/helpers";
 
 import Counter from "../../../../UI/Counter/Counter";
-import DialogModal from "../../../../UI/dialog/DialogModal";
 
 const CardWrapper = Styled.div`
     margin: 25px 25px 0 0;
     min-width: 300px;
     max-width: 320px;
-    padding: 30px 25px 30px 25px;
+    padding: 24px;
     border-radius: 12px;
     background-color: #fff;
     box-shadow:
@@ -34,18 +32,19 @@ const CardWrapper = Styled.div`
 const Timer = Styled.div`
     display: flex;
     justify-content: space-evenly;
+    background-color: #e2e6e9;
+    padding: 15px 10px 10px 10px;
+    border-radius: 5px;
 `;
 
 const CardDetails = Styled.div`
     text-align: center;
-    margin-bottom: 20px;
+    margin: 20px 0;
 `;
 
 const StyledHeader = Styled.h2`
     color: #96a2ac;
     font-weight: 400;
-    border-top: 1px solid #96a2ac;
-    padding: 15px 0;
     margin: 0;
 `;
 
@@ -69,10 +68,10 @@ const ButtonGhost = Styled.button`
   border: none;
   background-color: transparent;
   border: 1px solid #acb7ec;
-  color: #000;
+  color: #657581;
   border-radius: 5px;
   font-size: 0.88rem;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
 
   &:hover {
@@ -91,13 +90,11 @@ const HOUR = 1;
 const DAY = 1;
 const INTERVAL_SPEED = 650;
 
-const Card = ({ event, deleteEvent }) => {
-  const { id, name, date, time, color } = event;
+const Card = ({ event, deleteEvent, openEditModal }) => {
+  const { key, id, name, date, time, color } = event;
 
   const [eventTime, setEventTime] = useState(time);
   const [timerOver, setTimerOver] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-
 
   useEffect(() => {
     const updateTime = (time) => {
@@ -167,7 +164,7 @@ const Card = ({ event, deleteEvent }) => {
   };
 
   return (
-    <>
+    <Fragment key={key}>
       <CardWrapper color={color}>
         <Timer>
           <Counter value={eventTime.days} name="days" color={color} />
@@ -181,21 +178,11 @@ const Card = ({ event, deleteEvent }) => {
           <Date>{date}</Date>
         </CardDetails>
         <CardFooter>
-          <ButtonGhost onClick={() => setIsOpen(true)}>Edit</ButtonGhost>
+          <ButtonGhost onClick={() => {console.log("card/openEditModal/event -> ", event); openEditModal(event);}}>Edit</ButtonGhost>
           <ButtonGhost onClick={handleOnDelete}>Delete</ButtonGhost>
         </CardFooter>
       </CardWrapper>
-      {createPortal(
-        <DialogModal
-          title="Dialog"
-          isOpen={isOpen}
-          onProceed={() => {}}
-          onClose={() => setIsOpen(false)}
-        >
-        </DialogModal>,
-        document.body
-      )}
-    </>
+    </Fragment>
   );
 };
 

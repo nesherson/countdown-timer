@@ -7,44 +7,26 @@ import ColorPicker from "../../../UI/ColorPicker/ColorPicker";
 const Container = Styled.div`
   display: flex;
   flex-direction: column;
+  width: 420px;
 `;
 
-// const CardWrapper = Styled.div`
-//     width: 420px;
-//     border-radius: 12px;
-//     background-color: #fff;
-//     box-shadow:
-//   0 2.8px 2.2px rgba(0, 0, 0, 0.02),
-//   0 6.7px 5.3px rgba(0, 0, 0, 0.028),
-//   0 12.5px 10px rgba(0, 0, 0, 0.035),
-//   0 22.3px 17.9px rgba(0, 0, 0, 0.042),
-//   0 41.8px 33.4px rgba(0, 0, 0, 0.05),
-//   0 100px 80px rgba(0, 0, 0, 0.07)
-// ;
-
-//     @media only screen and (max-width: 510px) {
-//       width: 100%;
-//       margin: 0 3%;
-//     }
-// `;
+const CardHeader = Styled.div`
+  color: #434d56;
+  font-weight: 500;
+  font-size: 1.4rem;
+  padding: 14px 16px;
+`;
 
 const CardBody = Styled.div`
-    margin: 0 0 25px 0;
-`;
-
-const StyledHeader = Styled.h2`
-    color: #434d56;
-    font-weight: 400;
-    border-bottom: 1px solid #96a2ac;
-    padding: 0 0 10px 0;
-    margin: 0 0 25px 0;
+    margin: 0 0 10px 0;
+    padding: 0 16px;
 `;
 
 const CardFooter = Styled.div`
-    display: flex;
-    justify-content: flex-end;
-    border-top: 1px solid #eaedfa;
-    padding: 15px 0 0 0;
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid #eaedfa;
+  padding: 14px 16px 14px 16px;
 `;
 
 const Warning = Styled.span`
@@ -55,15 +37,15 @@ const Warning = Styled.span`
 
 const Input = Styled.input`
   display: block;
+  box-sizing: border-box;
   width: 100%;
-  margin-bottom: 12px;
-  font-size: 1.25rem;
-  border: none;
-  padding: 8px 0;
-  border-bottom: 1px solid #000;
+  font-size: 1rem;
+  padding: 8px;
+  border: 1px solid rgba(184, 192, 199, 0.6);
+  border-radius: 4px;
 
   &:focus {
-    border-bottom: 1px solid #2e48cd;
+    border: 1px solid rgba(46, 72, 205, 0.6);
     outline: none;
   }
 `;
@@ -100,6 +82,18 @@ const ButtonGhost = Styled.button`
   &:hover {
     background-color: #acb7ec;
   }
+`;
+
+const Label = Styled.label`
+    color: #4f5a64;
+    font-weight: 500;
+    margin: 0 10px 0 0 ;
+    padding: 0;
+    font-size: 0.9rem;
+`;
+
+  const FormLayoutElement = Styled.div`
+  margin: 10px 0;
 `;
 
 const formatDate = (date) => {
@@ -144,7 +138,7 @@ const getTimeBetweenDates = (dateInitial, dateFinal) => {
   );
 };
 
-const AddEvent = ({ createEvent, closeModal }) => {
+const AddEvent = ({ createEvent, closeModal, eventToEdit }) => {
   const [eventName, setEventName] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const [invalidDate, setInvalidDate] = useState(false);
@@ -187,24 +181,38 @@ const AddEvent = ({ createEvent, closeModal }) => {
     closeModal();
   };
 
+  if (eventToEdit !== null) {
+    // setEventName(eventToEdit.name);
+    // setSelectedDate(eventToEdit.date);
+    console.log(eventToEdit.date);
+    console.log(eventToEdit.time);
+  }
+
   return (
     <>
       <Container>
+        <CardHeader>Create an Event</CardHeader>
         <CardBody>
-          <StyledHeader>Create an Event</StyledHeader>
-          <Input
-            type="text"
-            value={eventName}
-            onChange={handleEventNameOnChange}
-            placeholder="Title"
-          />
-          <ColorPicker handleColor={handleSelectedColor} />
-          <DatePicker
-            date={selectedDate}
-            handleSelectedDate={handleSelectedDate}
-          />
-          {invalidName ? <Warning>Empty Name Input!</Warning> : null}
-          {invalidDate ? <Warning>Wrong Date!</Warning> : null}
+          <FormLayoutElement>
+            <Label>Title</Label>
+            <Input
+              type="text"
+              value={eventName}
+              onChange={handleEventNameOnChange}
+              placeholder="Title"
+            />
+          </FormLayoutElement>
+          <FormLayoutElement>
+            <DatePicker
+              date={selectedDate}
+              handleSelectedDate={handleSelectedDate}
+            />
+            {invalidName ? <Warning>Empty Name Input!</Warning> : null}
+            {invalidDate ? <Warning>Wrong Date!</Warning> : null}
+          </FormLayoutElement>
+          <FormLayoutElement>
+            <ColorPicker handleColor={handleSelectedColor} />
+          </FormLayoutElement>
         </CardBody>
         <CardFooter>
           <ButtonGhost onClick={closeModal}>Cancel</ButtonGhost>

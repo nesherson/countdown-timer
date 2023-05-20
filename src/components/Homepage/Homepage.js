@@ -38,6 +38,7 @@ const Main = Styled.main`
 const Homepage = () => {
   const [events, setEvents] = useState([]);
   const [isAddEventModalOpen, setIsAddEventModalOpen] = useState(false);
+  const [eventToEdit, setEventToEdit] = useState(null);
 
   const handleCreateEvent = (
     eventName,
@@ -66,7 +67,8 @@ const Homepage = () => {
     setEvents(events.filter((e) => e.id !== eventId));
   };
 
-  const handleOpenddEventModal = () => {
+  const handleOpenEditModal = (eventToEdit = null) => {
+    setEventToEdit(eventToEdit);
     setIsAddEventModalOpen(true);
   }
 
@@ -77,20 +79,20 @@ const Homepage = () => {
   return (
     <Container>
       <Header 
-        openAddEventModal={handleOpenddEventModal}
+        openAddEventModal={handleOpenEditModal}
         />
       <Main>
         <EventSection
           events={events}
           deleteEvent={handleDeleteEvent}
+          openEditModal={handleOpenEditModal}
         />
       </Main>
       {createPortal(
         <DialogModal
-          title="Create an Event"
           isOpen={isAddEventModalOpen}
         >
-           <AddEvent closeModal={handleCloseAddEventModal} createEvent={handleCreateEvent} />
+           <AddEvent closeModal={handleCloseAddEventModal} createEvent={handleCreateEvent} eventToEdit={eventToEdit} />
         </DialogModal>,
         document.body
       )}

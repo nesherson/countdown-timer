@@ -16,12 +16,12 @@ const Events = Styled.div`
     }
 `;
 
-function EventSection({ events, deleteEvent }) {
+function EventSection({ events, deleteEvent, openEditModal }) {
   return (
     <>
       <Events>
-        {events.map((event) => {
-          return <Card event={event} deleteEvent={deleteEvent}/>;
+        {events.map((event, index) => {
+          return <Card key={`${index}-${event.id}`}event={event} deleteEvent={deleteEvent} openEditModal={openEditModal} />;
         })}
       </Events>
     </>

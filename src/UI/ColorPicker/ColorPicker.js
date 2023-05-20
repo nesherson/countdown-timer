@@ -24,7 +24,7 @@ const Color = Styled.div`
     ${(props) =>
       props.selected
         ? css`
-            outline: 4px solid ${(props) => setAlpha(props.color, 0.7)};
+            outline: 2px solid ${(props) => setAlpha(props.color, 0.7)};
             outline-offset: 1px;
           `
         : ''}
@@ -71,9 +71,7 @@ const ColorPicker = ({ handleColor }) => {
               selected={color.selected}
               key={color.value}
               color={color.value}
-              onClick={() => {
-                handleSelectedColor(i);
-              }}
+              onClick={() => handleSelectedColor(i)}
             />
           );
         })}

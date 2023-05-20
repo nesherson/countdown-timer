@@ -5,7 +5,6 @@ const CounterWrapper = Styled.div`
   height: auto;
 `;
 
-//#596ed9
 const CounterNumber = Styled.div`
     padding: 10px;
     background-color: ${(props) => props.color};
@@ -16,11 +15,11 @@ const CounterNumber = Styled.div`
 `;
 
 const Text = Styled.p`
-  font-size: 0.8rem;
+  font-size: 0.74rem;
   margin: 0;
   padding: 0;
   text-align: center;
-  color: #96a2ac;
+  color: #434d56;
 `;
 
 const Counter = ({ value, name, color }) => {
