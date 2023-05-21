@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Styled, { css } from 'styled-components';
 
 import { setAlpha } from '../../util/helpers';
@@ -22,7 +22,7 @@ const Color = Styled.div`
     border-radius: 50%;
     background-color: ${(props) => props.color};
     ${(props) =>
-      props.selected
+      props.isSelected
         ? css`
             outline: 2px solid ${(props) => setAlpha(props.color, 0.7)};
             outline-offset: 1px;
@@ -38,29 +38,41 @@ const Label = Styled.label`
     font-size: 0.9rem;
 `;
 
-const ColorPicker = ({ handleColor }) => {
+const ColorPicker = ({ color, setColor }) => {
   const [colors, setColors] = useState([
-    { value: 'rgba(249, 55, 28, 1)', selected: true },
-    { value: 'rgba(249, 124, 28, 1)', selected: false },
-    { value: 'rgba(249, 200, 28, 1)', selected: false },
-    { value: 'rgba(65, 208, 182, 1)', selected: false },
-    { value: 'rgba(44, 173, 246, 1)', selected: false },
-    { value: 'rgba(101, 98, 252, 1)', selected: false },
+    { id: 1, value: 'rgba(249, 55, 28, 1)', isSelected: false },
+    { id: 2, value: 'rgba(249, 124, 28, 1)', isSelected: false },
+    { id: 3, value: 'rgba(249, 200, 28, 1)', isSelected: false },
+    { id: 4, value: 'rgba(65, 208, 182, 1)', isSelected: false },
+    { id: 5, value: 'rgba(44, 173, 246, 1)', isSelected: false },
+    { id: 6, value: 'rgba(101, 98, 252, 1)', isSelected: false },
   ]);
 
   const handleSelectedColor = (i) => {
-    const updatedColors = colors.map((color, colorIndex) => {
-      if (colorIndex === i) {
-        return { ...color, selected: true };
+    const updatedColors = colors.map((color, index) => {
+      if (index === i) {
+        return { ...color, isSelected: true };
       } else {
-        return { ...color, selected: false };
+        return { ...color, isSelected: false };
       }
     });
     setColors(updatedColors);
-    handleColor(colors[i].value);
+    setColor({
+      id: colors[i].id,
+      value: colors[i].value
+    });
   };
 
-  setAlpha('rgba(249, 55, 28, 1)', 0.3);
+  useEffect(() => {
+    if (color) {
+      colors.forEach(c => {
+        c.isSelected = false;
+      })
+      const temp = colors.find(c => c.id === color.id);
+      temp.isSelected = true;
+    }
+  }, [color, colors, setColor]);
+
   return (
     <Container>
       <Label>Color</Label>
@@ -68,8 +80,8 @@ const ColorPicker = ({ handleColor }) => {
         {colors.map((color, i) => {
           return (
             <Color
-              selected={color.selected}
-              key={color.value}
+              isSelected={color.isSelected}
+              key={color.id}
               color={color.value}
               onClick={() => handleSelectedColor(i)}
             />

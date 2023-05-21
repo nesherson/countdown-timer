@@ -37,8 +37,7 @@ const Main = Styled.main`
 
 const Homepage = () => {
   const [events, setEvents] = useState([]);
-  const [isAddEventModalOpen, setIsAddEventModalOpen] = useState(false);
-  const [eventToEdit, setEventToEdit] = useState(null);
+  const [isEventAddModalOpen, setIsEventAddModalOpen] = useState(false);
 
   const handleCreateEvent = (
     eventName,
@@ -46,16 +45,16 @@ const Homepage = () => {
     selectedDate,
     selectedColor
   ) => {
-    const id = `${Math.random()}${eventName}`;
     const updatedDate = new Date(selectedDate).toLocaleDateString(undefined, {
       year: "numeric",
       month: "long",
       day: "numeric",
     });
     const event = {
-      id: id,
+      id: `${Math.random()}${eventName}`,
       name: eventName,
-      date: updatedDate,
+      date: selectedDate,
+      displayDate: updatedDate,
       time: eventTime,
       color: selectedColor,
     };
@@ -63,36 +62,49 @@ const Homepage = () => {
     setEvents(updatedEvents);
   };
 
+  const handleEditEvent = (event) => {
+    setEvents(events.map(e => {
+      if (e.id === event.id) {
+        return {
+          ...e,
+          ...event
+        }
+      }
+      return e;
+    }));
+  }
+
   const handleDeleteEvent = (eventId) => {
     setEvents(events.filter((e) => e.id !== eventId));
   };
 
-  const handleOpenEditModal = (eventToEdit = null) => {
-    setEventToEdit(eventToEdit);
-    setIsAddEventModalOpen(true);
+  const handleOpenEventAddModal = () => {
+    setIsEventAddModalOpen(true);
   }
 
-  const handleCloseAddEventModal = () => {
-    setIsAddEventModalOpen(false);
-  }
+  const handleCloseEventAddModal = () => {
+    setIsEventAddModalOpen(false);
+  }  
 
   return (
     <Container>
       <Header 
-        openAddEventModal={handleOpenEditModal}
+        openAddEventModal={handleOpenEventAddModal}
         />
       <Main>
         <EventSection
           events={events}
           deleteEvent={handleDeleteEvent}
-          openEditModal={handleOpenEditModal}
+          editEvent={handleEditEvent}
         />
       </Main>
       {createPortal(
         <DialogModal
-          isOpen={isAddEventModalOpen}
+          isOpen={isEventAddModalOpen}
         >
-           <AddEvent closeModal={handleCloseAddEventModal} createEvent={handleCreateEvent} eventToEdit={eventToEdit} />
+           <AddEvent 
+            closeModal={handleCloseEventAddModal}  
+            createEvent={handleCreateEvent} />
         </DialogModal>,
         document.body
       )}

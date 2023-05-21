@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Styled from "styled-components";
 
 import DatePicker from "../../../UI/DatePicker/DatePicker";
@@ -138,14 +138,12 @@ const getTimeBetweenDates = (dateInitial, dateFinal) => {
   );
 };
 
-const AddEvent = ({ createEvent, closeModal }) => {
-  const defaultColor = { id: 1, value: 'rgba(249, 55, 28, 1)' };
-
+const EditEvent = ({ editEvent, closeModal, eventToEdit, isOpen }) => {
   const [eventName, setEventName] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const [invalidDate, setInvalidDate] = useState(false);
   const [invalidName, setInvalidName] = useState(false);
-  const [color, setColor] = useState(defaultColor);
+  const [color, setColor] = useState(null);
 
   const handleEventNameOnChange = (e) => {
     setEventName(e.target.value);
@@ -159,7 +157,7 @@ const AddEvent = ({ createEvent, closeModal }) => {
     setColor(color);
   };
 
-  const handleEventCreate = () => {
+  const handleEventEdit = () => {
     const currentDate = Date.now();
     const eventTime = getTimeBetweenDates(currentDate, selectedDate);
 
@@ -175,20 +173,34 @@ const AddEvent = ({ createEvent, closeModal }) => {
       return;
     }
 
-    createEvent(eventName, eventTime, selectedDate, color);
+    eventToEdit.name = eventName;
+    eventToEdit.date = selectedDate;
+    eventToEdit.displayDate = new Date(selectedDate).toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+    eventToEdit.time = eventTime;
+    eventToEdit.color = color;
+    editEvent(eventToEdit);
     setInvalidDate(false);
     setInvalidName(false);
-    setEventName("");
-    setSelectedDate("2023-05-21");
-    setColor(defaultColor);
 
     closeModal();
   };
 
+  useEffect(() => {
+    if (eventToEdit && isOpen === true) {
+      setEventName(eventToEdit.name);
+      setColor(eventToEdit.color);
+      setSelectedDate(eventToEdit.date);
+    } 
+  }, [eventToEdit, isOpen]);
+
   return (
     <>
       <Container>
-        <CardHeader>Create an Event</CardHeader>
+        <CardHeader>Edit an Event</CardHeader>
         <CardBody>
           <FormLayoutElement>
             <Label>Title</Label>
@@ -213,11 +225,11 @@ const AddEvent = ({ createEvent, closeModal }) => {
         </CardBody>
         <CardFooter>
           <ButtonGhost onClick={closeModal}>Cancel</ButtonGhost>
-          <ButtonPrimary onClick={handleEventCreate}>Save</ButtonPrimary>
+          <ButtonPrimary onClick={handleEventEdit}>Save</ButtonPrimary>
         </CardFooter>
       </Container>
     </>
   );
 };
 
-export default AddEvent;
+export default EditEvent;

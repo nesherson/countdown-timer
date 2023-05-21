@@ -1,10 +1,13 @@
 import { useEffect, useState, Fragment } from "react";
+import { createPortal } from "react-dom";
 
 import Styled from "styled-components";
 
 import { setAlpha } from "../../../../util/helpers";
 
 import Counter from "../../../../UI/Counter/Counter";
+import EditEvent from "../../AddEvent/EditEvent";
+import DialogModal from "../../../../UI/dialog/DialogModal";
 
 const CardWrapper = Styled.div`
     margin: 25px 25px 0 0;
@@ -90,13 +93,16 @@ const HOUR = 1;
 const DAY = 1;
 const INTERVAL_SPEED = 650;
 
-const Card = ({ event, deleteEvent, openEditModal }) => {
-  const { key, id, name, date, time, color } = event;
+const Card = ({ event, deleteEvent, editEvent }) => {
+  const { key, id, name, displayDate, time, color } = event;
 
   const [eventTime, setEventTime] = useState(time);
   const [timerOver, setTimerOver] = useState(false);
+  const [isEventEditModalOpen, setIsEventEditModalOpen] = useState(false);
 
   useEffect(() => {
+    if (eventTime !== time) setEventTime(time);
+
     const updateTime = (time) => {
       if (timerOver) {
         return;
@@ -145,43 +151,63 @@ const Card = ({ event, deleteEvent, openEditModal }) => {
         };
       }
     };
+      
+    const intervalId = setInterval(() => 
+      setEventTime((prevState) => updateTime(prevState))
+    , INTERVAL_SPEED);
 
-    const intervalId = setInterval(() => {
-      setEventTime((prevState) => updateTime(prevState));
-    }, INTERVAL_SPEED);
+    if (timerOver) clearInterval(intervalId); 
 
-    if (timerOver) {
-      clearInterval(intervalId);
-    }
+    return () => clearInterval(intervalId);
+  }, [time, timerOver]);
 
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [timerOver]);
-
-  const handleOnDelete = (e) => {
+  const handleOnDelete = () => {
     deleteEvent(id);
   };
 
+  const handleOpenEventEditModal = () => {
+    setIsEventEditModalOpen(true);
+  } 
+
+  const handleCloseEventEditModal = () => {
+    setIsEventEditModalOpen(false);
+  }
+
+  const handleTest = () => {
+    setEventTime(time);
+  }
+
   return (
     <Fragment key={key}>
-      <CardWrapper color={color}>
+      <CardWrapper color={color.value}>
         <Timer>
-          <Counter value={eventTime.days} name="days" color={color} />
-          <Counter value={eventTime.hours} name="hours" color={color} />
-          <Counter value={eventTime.minutes} name="minutes" color={color} />
-          <Counter value={eventTime.seconds} name="seconds" color={color} />
+          <Counter value={eventTime.days} name="days" color={color.value} />
+          <Counter value={eventTime.hours} name="hours" color={color.value} />
+          <Counter value={eventTime.minutes} name="minutes" color={color.value} />
+          <Counter value={eventTime.seconds} name="seconds" color={color.value} />
         </Timer>
         <CardDetails>
           <StyledHeader>Countdown to:</StyledHeader>
           <EventName>{name}</EventName>
-          <Date>{date}</Date>
+          <Date>{displayDate}</Date>
         </CardDetails>
         <CardFooter>
-          <ButtonGhost onClick={() => {console.log("card/openEditModal/event -> ", event); openEditModal(event);}}>Edit</ButtonGhost>
+          <ButtonGhost onClick={handleOpenEventEditModal}>Edit</ButtonGhost>
           <ButtonGhost onClick={handleOnDelete}>Delete</ButtonGhost>
+          <ButtonGhost onClick={handleTest}>Test</ButtonGhost>
         </CardFooter>
       </CardWrapper>
+      {createPortal(
+        <DialogModal
+          isOpen={isEventEditModalOpen}>
+           <EditEvent 
+            closeModal={handleCloseEventEditModal} 
+            editEvent={editEvent} 
+            eventToEdit={event}
+            isOpen={isEventEditModalOpen} />
+        </DialogModal>,
+        document.body
+      )}
     </Fragment>
   );
 };
