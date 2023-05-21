@@ -1,5 +1,6 @@
-export const setAlpha = (color, alphaValue) => {
+export function setAlpha(color, alphaValue) {
   let tempColor = color.split(' ');
   tempColor[3] = `${alphaValue})`;
   return tempColor.join(' ');
 };
+

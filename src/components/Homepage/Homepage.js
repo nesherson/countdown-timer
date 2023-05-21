@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Styled from "styled-components";
+
+import { saveToLocalStorage, loadFromLocalStorage, removeFromLocalStorage } from "../../util/localStorage";
 
 import Header from "./Header/Header";
 import EventSection from "./EventSection/EventSection";
@@ -35,9 +37,18 @@ const Main = Styled.main`
 
 `;
 
+const EVENTS_KEY = "events";
+
 const Homepage = () => {
   const [events, setEvents] = useState([]);
   const [isEventAddModalOpen, setIsEventAddModalOpen] = useState(false);
+
+  useEffect(() => {
+    const savedEvents = loadFromLocalStorage(EVENTS_KEY);
+    if (savedEvents) {
+      setEvents(savedEvents);
+    }
+  }, []);
 
   const handleCreateEvent = (
     eventName,
@@ -60,10 +71,11 @@ const Homepage = () => {
     };
     const updatedEvents = [...events, event];
     setEvents(updatedEvents);
+    saveToLocalStorage(EVENTS_KEY, updatedEvents);
   };
 
   const handleEditEvent = (event) => {
-    setEvents(events.map(e => {
+    const updatedEvents = events.map(e => {
       if (e.id === event.id) {
         return {
           ...e,
@@ -71,7 +83,10 @@ const Homepage = () => {
         }
       }
       return e;
-    }));
+    });
+    setEvents(updatedEvents);
+    removeFromLocalStorage(EVENTS_KEY);
+    saveToLocalStorage(EVENTS_KEY, updatedEvents);
   }
 
   const handleDeleteEvent = (eventId) => {
