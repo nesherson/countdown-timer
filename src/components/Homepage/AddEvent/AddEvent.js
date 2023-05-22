@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Styled from "styled-components";
 
+import { getTimeBetweenDates } from "../../../util/date";
+
 import DatePicker from "../../../UI/DatePicker/DatePicker";
 import ColorPicker from "../../../UI/ColorPicker/ColorPicker";
 
@@ -96,49 +98,7 @@ const Label = Styled.label`
   margin: 10px 0;
 `;
 
-const formatDate = (date) => {
-  return new Date(date);
-};
-
-const formatSelectedDate = (date) => {
-  const updatedDate = new Date(date);
-  return new Date(
-    updatedDate.getFullYear(),
-    updatedDate.getMonth(),
-    updatedDate.getDate(),
-    0,
-    0,
-    0,
-    0
-  );
-};
-
-function secondsToDhms(seconds) {
-  const tempSeconds = Number(seconds);
-  const d = Math.floor(tempSeconds / (3600 * 24));
-  const h = Math.floor((tempSeconds % (3600 * 24)) / 3600);
-  const m = Math.floor((tempSeconds % 3600) / 60);
-  const s = Math.floor(tempSeconds % 60);
-
-  return {
-    days: d,
-    hours: h,
-    minutes: m,
-    seconds: s,
-  };
-}
-
-const getTimeBetweenDates = (dateInitial, dateFinal) => {
-  if ((formatSelectedDate(dateFinal) - formatDate(dateInitial)) / 1000 < 0) {
-    return null;
-  }
-
-  return secondsToDhms(
-    (formatSelectedDate(dateFinal) - formatDate(dateInitial)) / 1000
-  );
-};
-
-const AddEvent = ({ createEvent, closeModal }) => {
+function AddEvent({ createEvent, closeModal }) {
   const defaultColor = { id: 1, value: 'rgba(249, 55, 28, 1)' };
 
   const [eventName, setEventName] = useState("");

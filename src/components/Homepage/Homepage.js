@@ -3,6 +3,9 @@ import { createPortal } from "react-dom";
 import Styled from "styled-components";
 
 import { saveToLocalStorage, loadFromLocalStorage, removeFromLocalStorage } from "../../util/localStorage";
+import { getTimeBetweenDates } from "../../util/date";
+
+import { EVENTS_KEY } from "../../constants/localStorageKeys";
 
 import Header from "./Header/Header";
 import EventSection from "./EventSection/EventSection";
@@ -37,15 +40,15 @@ const Main = Styled.main`
 
 `;
 
-const EVENTS_KEY = "events";
-
-const Homepage = () => {
+function Homepage() {
   const [events, setEvents] = useState([]);
   const [isEventAddModalOpen, setIsEventAddModalOpen] = useState(false);
 
   useEffect(() => {
     const savedEvents = loadFromLocalStorage(EVENTS_KEY);
+    // console.log(getTimeBetweenDates(Date.now(), savedEvents[0].date));
     if (savedEvents) {
+      savedEvents.forEach(se => getEventTimeUpToDate(se));
       setEvents(savedEvents);
     }
   }, []);
@@ -89,17 +92,18 @@ const Homepage = () => {
     saveToLocalStorage(EVENTS_KEY, updatedEvents);
   }
 
-  const handleDeleteEvent = (eventId) => {
+  const handleDeleteEvent = (eventId) =>
     setEvents(events.filter((e) => e.id !== eventId));
-  };
 
-  const handleOpenEventAddModal = () => {
+  const handleOpenEventAddModal = () => 
     setIsEventAddModalOpen(true);
-  }
 
-  const handleCloseEventAddModal = () => {
+  const handleCloseEventAddModal = () => 
     setIsEventAddModalOpen(false);
-  }  
+
+  const getEventTimeUpToDate = (event) => {
+    event.time = getTimeBetweenDates(Date.now(), event.date);
+  }
 
   return (
     <Container>

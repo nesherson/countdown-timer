@@ -1,5 +1,4 @@
 export function saveToLocalStorage(key, value) {
-    console.log("saveTo -> ",  value);
     localStorage.setItem(key, JSON.stringify(value));
 }
 

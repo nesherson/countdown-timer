@@ -4,6 +4,8 @@ import { createPortal } from "react-dom";
 import Styled from "styled-components";
 
 import { setAlpha } from "../../../../util/helpers";
+import { saveToLocalStorage, loadFromLocalStorage, removeFromLocalStorage } from "../../../../util/localStorage";
+import { EVENTS_KEY } from "../../../../constants/localStorageKeys";
 
 import Counter from "../../../../UI/Counter/Counter";
 import EditEvent from "../../AddEvent/EditEvent";
@@ -93,7 +95,7 @@ const HOUR = 1;
 const DAY = 1;
 const INTERVAL_SPEED = 650;
 
-const Card = ({ event, deleteEvent, editEvent }) => {
+function Card({ event, deleteEvent, editEvent }) {
   const { key, id, name, displayDate, time, color } = event;
 
   const [eventTime, setEventTime] = useState(time);
@@ -122,11 +124,15 @@ const Card = ({ event, deleteEvent, editEvent }) => {
         };
       }
       if (time.seconds === 0 && time.minutes !== 0) {
-        return {
+        const newTime = {
           ...time,
           seconds: 60,
           minutes: time.minutes - MINUTE,
         };
+
+        updateEventAndSaveToLocalStorage(event.id, newTime);
+
+        return newTime;
       } else if (time.seconds === 0 && time.minutes === 0 && time.hours !== 0) {
         return {
           ...time,
@@ -161,22 +167,23 @@ const Card = ({ event, deleteEvent, editEvent }) => {
     return () => clearInterval(intervalId);
   }, [time, timerOver]);
 
-  const handleOnDelete = () => {
+  const handleOnDelete = () =>
     deleteEvent(id);
-  };
 
-  const handleOpenEventEditModal = () => {
+  const handleOpenEventEditModal = () => 
     setIsEventEditModalOpen(true);
-  } 
-
-  const handleCloseEventEditModal = () => {
+  
+  const handleCloseEventEditModal = () => 
     setIsEventEditModalOpen(false);
-  }
 
-  const handleTest = () => {
-    setEventTime(time);
-  }
+  const updateEventAndSaveToLocalStorage = (currentEventId, newTime) => {
+    const savedEvents = loadFromLocalStorage(EVENTS_KEY);
+    const savedEventIndex = savedEvents.findIndex(se => se.id === currentEventId);
+    savedEvents[savedEventIndex].time = newTime;
 
+    removeFromLocalStorage(EVENTS_KEY);
+    saveToLocalStorage(EVENTS_KEY, savedEvents);
+  } 
   return (
     <Fragment key={key}>
       <CardWrapper color={color.value}>
@@ -194,7 +201,6 @@ const Card = ({ event, deleteEvent, editEvent }) => {
         <CardFooter>
           <ButtonGhost onClick={handleOpenEventEditModal}>Edit</ButtonGhost>
           <ButtonGhost onClick={handleOnDelete}>Delete</ButtonGhost>
-          <ButtonGhost onClick={handleTest}>Test</ButtonGhost>
         </CardFooter>
       </CardWrapper>
       {createPortal(
