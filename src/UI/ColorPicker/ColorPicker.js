@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Styled, { css } from 'styled-components';
 
-import { setAlpha } from '../../util/helpers';
+import { setAlpha } from 'src/util/helpers';
 
 const Container = Styled.div`
     margin: 25px 0 20px 0;

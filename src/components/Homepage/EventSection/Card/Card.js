@@ -3,13 +3,13 @@ import { createPortal } from "react-dom";
 
 import Styled from "styled-components";
 
-import { setAlpha } from "../../../../util/helpers";
-import { saveToLocalStorage, loadFromLocalStorage, removeFromLocalStorage } from "../../../../util/localStorage";
-import { EVENTS_KEY } from "../../../../constants/localStorageKeys";
+import { setAlpha } from "src/util/helpers";
+import { saveToLocalStorage, loadFromLocalStorage, removeFromLocalStorage } from "src/util/localStorage";
+import { EVENTS_KEY } from "src/constants/localStorageKeys";
 
-import Counter from "../../../../UI/Counter/Counter";
-import EditEvent from "../../AddEvent/EditEvent";
-import DialogModal from "../../../../UI/dialog/DialogModal";
+import Counter from "src/UI/Counter/Counter";
+import EditEvent from "src/components/Homepage/editEvent/EditEvent";
+import Modal from "src/UI/dialog/Modal";
 
 const CardWrapper = Styled.div`
     margin: 25px 25px 0 0;
@@ -204,14 +204,14 @@ function Card({ event, deleteEvent, editEvent }) {
         </CardFooter>
       </CardWrapper>
       {createPortal(
-        <DialogModal
+        <Modal
           isOpen={isEventEditModalOpen}>
            <EditEvent 
             closeModal={handleCloseEventEditModal} 
             editEvent={editEvent} 
             eventToEdit={event}
             isOpen={isEventEditModalOpen} />
-        </DialogModal>,
+        </Modal>,
         document.body
       )}
     </Fragment>

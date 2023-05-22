@@ -23,7 +23,7 @@ function isClickInsideRectangle(e, element) {
   );
 }
 
-function DialogModal({ isOpen, onClose, children }) {
+function Modal({ isOpen, onClose, children }) {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -49,4 +49,4 @@ function DialogModal({ isOpen, onClose, children }) {
   );
 }
 
-export default DialogModal;
+export default Modal;

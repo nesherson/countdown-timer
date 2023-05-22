@@ -2,15 +2,15 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Styled from "styled-components";
 
-import { saveToLocalStorage, loadFromLocalStorage, removeFromLocalStorage } from "../../util/localStorage";
-import { getTimeBetweenDates } from "../../util/date";
+import { saveToLocalStorage, loadFromLocalStorage, removeFromLocalStorage } from "src/util/localStorage";
+import { getTimeBetweenDates } from "src/util/date";
 
-import { EVENTS_KEY } from "../../constants/localStorageKeys";
+import { EVENTS_KEY } from "src/constants/localStorageKeys";
 
 import Header from "./Header/Header";
 import EventSection from "./EventSection/EventSection";
 import AddEvent from "./AddEvent/AddEvent";
-import DialogModal from "../../UI/dialog/DialogModal";
+import Modal from "src/UI/dialog/Modal";
 
 const Container = Styled.div`
   position: relative;
@@ -118,13 +118,13 @@ function Homepage() {
         />
       </Main>
       {createPortal(
-        <DialogModal
+        <Modal
           isOpen={isEventAddModalOpen}
         >
            <AddEvent 
             closeModal={handleCloseEventAddModal}  
             createEvent={handleCreateEvent} />
-        </DialogModal>,
+        </Modal>,
         document.body
       )}
     </Container>

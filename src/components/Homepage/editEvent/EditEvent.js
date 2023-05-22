@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import Styled from "styled-components";
 
-import { getTimeBetweenDates } from "../../../util/date";
+import { getTimeBetweenDates } from "src/util/date";
 
-import DatePicker from "../../../UI/DatePicker/DatePicker";
-import ColorPicker from "../../../UI/ColorPicker/ColorPicker";
+import DatePicker from "src/UI/DatePicker/DatePicker";
+import ColorPicker from "src/UI/ColorPicker/ColorPicker";
 
 const Container = Styled.div`
   display: flex;
