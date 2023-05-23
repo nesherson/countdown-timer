@@ -8,9 +8,9 @@ function formatSelectedDate(date) {
     updatedDate.getFullYear(),
     updatedDate.getMonth(),
     updatedDate.getDate(),
-    0,
-    0,
-    0,
+    updatedDate.getHours(),
+    updatedDate.getMinutes(),
+    updatedDate.getSeconds(),
     0
   );
 };

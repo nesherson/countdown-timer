@@ -94,34 +94,34 @@ const Label = Styled.label`
     font-size: 0.9rem;
 `;
 
-  const FormLayoutElement = Styled.div`
+const FormLayoutElement = Styled.div`
   margin: 10px 0;
 `;
 
 function AddEvent({ createEvent, closeModal }) {
-  const defaultColor = { id: 1, value: 'rgba(249, 55, 28, 1)' };
+  const defaultColor = { id: 1, value: "rgba(249, 55, 28, 1)" };
 
   const [eventName, setEventName] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
+  const [time, setTime] = useState("");
   const [invalidDate, setInvalidDate] = useState(false);
   const [invalidName, setInvalidName] = useState(false);
   const [color, setColor] = useState(defaultColor);
+  const [useTime, setUseTime] = useState(false);
 
-  const handleEventNameOnChange = (e) => {
-    setEventName(e.target.value);
-  };
-
-  const handleSelectedDate = (date) => {
-    setSelectedDate(date);
-  };
-
-  const handleSelectedColor = (color) => {
-    setColor(color);
-  };
+  const handleEventNameOnChange = (e) => setEventName(e.target.value);
+  const handleSelectedDate = (date) => setSelectedDate(date);
+  const handleSelectedColor = (color) => setColor(color);
+  const handleTimeOnChange = (e) => setTime(e.target.value);
+  const handleUseTimeOnChange = (e) => setUseTime(e.target.checked);
 
   const handleEventCreate = () => {
     const currentDate = Date.now();
-    const eventTime = getTimeBetweenDates(currentDate, selectedDate);
+    let endDate = selectedDate;
+
+    if (useTime) endDate = `${selectedDate} ${time}`;
+
+    const eventTime = getTimeBetweenDates(currentDate, endDate);
 
     if (!eventTime) {
       setInvalidDate(true);
@@ -135,11 +135,12 @@ function AddEvent({ createEvent, closeModal }) {
       return;
     }
 
-    createEvent(eventName, eventTime, selectedDate, color);
+    createEvent(eventName, eventTime, endDate, color);
     setInvalidDate(false);
     setInvalidName(false);
     setEventName("");
-    setSelectedDate("2023-05-21");
+    setSelectedDate("");
+    setTime("");
     setColor(defaultColor);
 
     closeModal();
@@ -168,6 +169,20 @@ function AddEvent({ createEvent, closeModal }) {
             {invalidDate ? <Warning>Wrong Date!</Warning> : null}
           </FormLayoutElement>
           <FormLayoutElement>
+            <input
+              type="checkbox"
+              id="use-time-checkbox"
+              checked={useTime}
+              onChange={handleUseTimeOnChange}
+            />
+            <label htmlFor="use-time-checkbox">Use time</label>
+          </FormLayoutElement>
+          {useTime && (
+            <FormLayoutElement>
+              <Input type="time" value={time} onChange={handleTimeOnChange} />
+            </FormLayoutElement>
+          )}
+          <FormLayoutElement>
             <ColorPicker color={color} setColor={handleSelectedColor} />
           </FormLayoutElement>
         </CardBody>
@@ -178,6 +193,6 @@ function AddEvent({ createEvent, closeModal }) {
       </Container>
     </>
   );
-};
+}
 
 export default AddEvent;

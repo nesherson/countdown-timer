@@ -46,7 +46,6 @@ function Homepage() {
 
   useEffect(() => {
     const savedEvents = loadFromLocalStorage(EVENTS_KEY);
-    // console.log(getTimeBetweenDates(Date.now(), savedEvents[0].date));
     if (savedEvents) {
       savedEvents.forEach(se => getEventTimeUpToDate(se));
       setEvents(savedEvents);
@@ -63,6 +62,8 @@ function Homepage() {
       year: "numeric",
       month: "long",
       day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
     });
     const event = {
       id: `${Math.random()}${eventName}`,
