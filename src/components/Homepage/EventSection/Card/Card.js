@@ -167,8 +167,12 @@ function Card({ event, deleteEvent, editEvent }) {
     return () => clearInterval(intervalId);
   }, [time, timerOver]);
 
-  const handleOnDelete = () =>
+  const handleOnDelete = () => {
     deleteEvent(id);
+    let savedEvents = loadFromLocalStorage(EVENTS_KEY);
+    removeFromLocalStorage(EVENTS_KEY);
+    saveToLocalStorage(EVENTS_KEY, savedEvents.filter(se => se.id !== id));
+  }
 
   const handleOpenEventEditModal = () => 
     setIsEventEditModalOpen(true);
