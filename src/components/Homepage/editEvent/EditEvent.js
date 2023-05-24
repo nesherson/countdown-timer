@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Styled from "styled-components";
 
-import { getTimeBetweenDates } from "src/util/date";
+import { getLocaleDateString, getTimeBetweenDates } from "src/util/date";
 
 import DatePicker from "src/UI/DatePicker/DatePicker";
 import ColorPicker from "src/UI/ColorPicker/ColorPicker";
@@ -74,7 +74,7 @@ const ButtonGhost = Styled.button`
   padding: 8px 18px;
   border: none;
   background-color: transparent;
-  border: 1px solid #acb7ec;
+  border: 1px solid #d3d9de;
   color: #000;
   border-radius: 5px;
   font-size: 0.88rem;
@@ -82,7 +82,7 @@ const ButtonGhost = Styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #acb7ec;
+    background-color: #f0f2f4;
   }
 `;
 
@@ -99,61 +99,70 @@ const Label = Styled.label`
 `;
 
 function EditEvent({ editEvent, closeModal, eventToEdit, isOpen }) {
-  const [eventName, setEventName] = useState("");
-  const [selectedDate, setSelectedDate] = useState("");
+  const [title, setTitle] = useState("");
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+  const [color, setColor] = useState(eventToEdit.color);
+  const [useTime, setUseTime] = useState(false);
+
   const [invalidDate, setInvalidDate] = useState(false);
-  const [invalidName, setInvalidName] = useState(false);
-  const [color, setColor] = useState(null);
+  const [invalidTitle, setInvalidTitle] = useState(false);
 
-  const handleEventNameOnChange = (e) => {
-    setEventName(e.target.value);
-  };
-
-  const handleSelectedDate = (date) => {
-    setSelectedDate(date);
-  };
-
-  const handleSelectedColor = (color) => {
-    setColor(color);
-  };
+  const handleTitleOnChange = (e) => setTitle(e.target.value);
+  const handleDateOnChange = (date) => setDate(date);
+  const handleColorOnChange = (color) => setColor(color);
+  const handleTimeOnChange = (e) => setTime(e.target.value);
+  const handleUseTimeOnChange = (e) => setUseTime(e.target.checked);
 
   const handleEventEdit = () => {
     const currentDate = Date.now();
-    const eventTime = getTimeBetweenDates(currentDate, selectedDate);
+    let endDate = date;
 
-    if (!eventTime) {
+    if (useTime) endDate = `${date} ${time}`;
+
+    const timer = getTimeBetweenDates(currentDate, endDate);
+
+    if (!timer) {
       setInvalidDate(true);
-      setInvalidName(false);
+      setInvalidTitle(false);
       return;
     }
 
-    if (eventName.length < 1) {
-      setInvalidName(true);
+    if (title.length < 1) {
+      setInvalidTitle(true);
       setInvalidDate(false);
       return;
     }
 
-    eventToEdit.name = eventName;
-    eventToEdit.date = selectedDate;
-    eventToEdit.displayDate = new Date(selectedDate).toLocaleDateString(undefined, {
+    eventToEdit.title = title;
+    eventToEdit.date = date;
+    eventToEdit.displayDate = getLocaleDateString(date, undefined, {
       year: "numeric",
       month: "long",
       day: "numeric",
-    });
-    eventToEdit.time = eventTime;
+    })
+    eventToEdit.timer = timer;
+    eventToEdit.time = time;
     eventToEdit.color = color;
     editEvent(eventToEdit);
     setInvalidDate(false);
-    setInvalidName(false);
+    setInvalidTitle(false);
 
     closeModal();
   };
 
   useEffect(() => {
     if (eventToEdit && isOpen === true) {
-      setEventName(eventToEdit.name);
+      setTitle(eventToEdit.title);
       setColor(eventToEdit.color);
-      setSelectedDate(eventToEdit.date);
+
+      setDate(eventToEdit.date);
+
+      if (eventToEdit.time) {
+        setTime(eventToEdit.time);
+        setUseTime(true);
+      }
+        
     } 
   }, [eventToEdit, isOpen]);
 
@@ -166,21 +175,35 @@ function EditEvent({ editEvent, closeModal, eventToEdit, isOpen }) {
             <Label>Title</Label>
             <Input
               type="text"
-              value={eventName}
-              onChange={handleEventNameOnChange}
+              value={title}
+              onChange={handleTitleOnChange}
               placeholder="Title"
             />
           </FormLayoutElement>
           <FormLayoutElement>
             <DatePicker
-              date={selectedDate}
-              handleSelectedDate={handleSelectedDate}
+              date={date}
+              onChange={handleDateOnChange}
             />
-            {invalidName ? <Warning>Empty Name Input!</Warning> : null}
+            {invalidTitle ? <Warning>Empty Title Input!</Warning> : null}
             {invalidDate ? <Warning>Wrong Date!</Warning> : null}
           </FormLayoutElement>
           <FormLayoutElement>
-            <ColorPicker color={color} setColor={handleSelectedColor} />
+            <input
+              type="checkbox"
+              id="use-time-checkbox"
+              checked={useTime}
+              onChange={handleUseTimeOnChange}
+            />
+            <label htmlFor="use-time-checkbox">Use time</label>
+          </FormLayoutElement>
+          {useTime && (
+            <FormLayoutElement>
+              <Input type="time" value={time} onChange={handleTimeOnChange} />
+            </FormLayoutElement>
+          )}
+          <FormLayoutElement>
+            <ColorPicker color={color} onChange={handleColorOnChange} />
           </FormLayoutElement>
         </CardBody>
         <CardFooter>
