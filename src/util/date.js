@@ -38,3 +38,21 @@ export function getTimeBetweenDates(dateInitial, dateFinal) {
     (formatSelectedDate(dateFinal) - formatDate(dateInitial)) / 1000
   );
 };
+
+export function getLocaleDateString(date, locales, options) {
+  return new Date(date).toLocaleDateString(locales, options);
+}
+
+export const defaultDateTimeOptions = {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+  hour: "2-digit",
+  minute: "2-digit"
+};
+
+export const defaultDateOptions = {
+  year: "numeric",
+  month: "long",
+  day: "numeric"
+};

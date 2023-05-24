@@ -74,7 +74,7 @@ const ButtonGhost = Styled.button`
   padding: 8px 18px;
   border: none;
   background-color: transparent;
-  border: 1px solid #acb7ec;
+  border: 1px solid #d3d9de;
   color: #000;
   border-radius: 5px;
   font-size: 0.88rem;
@@ -82,7 +82,7 @@ const ButtonGhost = Styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #acb7ec;
+    background-color: #f0f2f4;
   }
 `;
 
@@ -101,45 +101,46 @@ const FormLayoutElement = Styled.div`
 function AddEvent({ createEvent, closeModal }) {
   const defaultColor = { id: 1, value: "rgba(249, 55, 28, 1)" };
 
-  const [eventName, setEventName] = useState("");
-  const [selectedDate, setSelectedDate] = useState("");
+  const [title, setTitle] = useState("");
+  const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  const [invalidDate, setInvalidDate] = useState(false);
-  const [invalidName, setInvalidName] = useState(false);
   const [color, setColor] = useState(defaultColor);
   const [useTime, setUseTime] = useState(false);
 
-  const handleEventNameOnChange = (e) => setEventName(e.target.value);
-  const handleSelectedDate = (date) => setSelectedDate(date);
-  const handleSelectedColor = (color) => setColor(color);
+  const [invalidDate, setInvalidDate] = useState(false);
+  const [invalidTitle, setInvalidTitle] = useState(false);
+
+  const handleTitleOnChange = (e) => setTitle(e.target.value);
+  const handleDateOnChange = (date) => setDate(date);
+  const handleColorOnChange = (color) => setColor(color);
   const handleTimeOnChange = (e) => setTime(e.target.value);
   const handleUseTimeOnChange = (e) => setUseTime(e.target.checked);
 
   const handleEventCreate = () => {
     const currentDate = Date.now();
-    let endDate = selectedDate;
+    let endDate = date;
 
-    if (useTime) endDate = `${selectedDate} ${time}`;
+    if (useTime) endDate = `${date} ${time}`;
 
-    const eventTime = getTimeBetweenDates(currentDate, endDate);
+    const timer = getTimeBetweenDates(currentDate, endDate);
 
-    if (!eventTime) {
+    if (!timer) {
       setInvalidDate(true);
-      setInvalidName(false);
+      setInvalidTitle(false);
       return;
     }
 
-    if (eventName.length < 1) {
-      setInvalidName(true);
+    if (title.length < 1) {
+      setInvalidTitle(true);
       setInvalidDate(false);
       return;
     }
 
-    createEvent(eventName, eventTime, endDate, color);
+    createEvent(title, date, time, color, timer);
     setInvalidDate(false);
-    setInvalidName(false);
-    setEventName("");
-    setSelectedDate("");
+    setInvalidTitle(false);
+    setTitle("");
+    setDate("");
     setTime("");
     setColor(defaultColor);
 
@@ -155,18 +156,18 @@ function AddEvent({ createEvent, closeModal }) {
             <Label>Title</Label>
             <Input
               type="text"
-              value={eventName}
-              onChange={handleEventNameOnChange}
+              value={title}
+              onChange={handleTitleOnChange}
               placeholder="Title"
             />
           </FormLayoutElement>
           <FormLayoutElement>
             <DatePicker
-              date={selectedDate}
-              handleSelectedDate={handleSelectedDate}
+              date={date}
+              onChange={handleDateOnChange}
             />
-            {invalidName ? <Warning>Empty Name Input!</Warning> : null}
-            {invalidDate ? <Warning>Wrong Date!</Warning> : null}
+            {invalidTitle ? <Warning>Empty Title Input!</Warning> : null}
+            {invalidDate ? <Warning>Invalid Date!</Warning> : null}
           </FormLayoutElement>
           <FormLayoutElement>
             <input
@@ -183,7 +184,7 @@ function AddEvent({ createEvent, closeModal }) {
             </FormLayoutElement>
           )}
           <FormLayoutElement>
-            <ColorPicker color={color} setColor={handleSelectedColor} />
+            <ColorPicker color={color} onChange={handleColorOnChange} />
           </FormLayoutElement>
         </CardBody>
         <CardFooter>

@@ -12,12 +12,13 @@ import EditEvent from "src/components/Homepage/editEvent/EditEvent";
 import Modal from "src/UI/dialog/Modal";
 
 const CardWrapper = Styled.div`
-    margin: 25px 25px 0 0;
+    margin: 25px 20px;
     min-width: 300px;
-    max-width: 320px;
-    padding: 24px;
+    max-width: 340px;
     border-radius: 12px;
     background-color: #fff;
+    border: 1px solid #eaedfa;
+
     box-shadow:
   0px 2px 6px -9px ${(props) => setAlpha(props.color, 0.18)},
   0px 2px 20px -9px ${(props) => setAlpha(props.color, 0.24)}
@@ -37,14 +38,13 @@ const CardWrapper = Styled.div`
 const Timer = Styled.div`
     display: flex;
     justify-content: space-evenly;
-    background-color: #e2e6e9;
-    padding: 15px 10px 10px 10px;
-    border-radius: 5px;
+    background-color: #f0f2f4;
+    padding: 15px 10px;
 `;
 
 const CardDetails = Styled.div`
     text-align: center;
-    margin: 20px 0;
+    margin: 16px 0;
 `;
 
 const StyledHeader = Styled.h2`
@@ -63,7 +63,6 @@ const EventName = Styled.h3`
 const Date = Styled.span`
      color: #96a2ac;
      font-size: 0.8rem;
-     border-bottom: 1px solid #96a2ac;
      display: block;
      padding: 0 0 15px 0;
 `;
@@ -72,7 +71,7 @@ const ButtonGhost = Styled.button`
   padding: 8px 18px;
   border: none;
   background-color: transparent;
-  border: 1px solid #acb7ec;
+  border: 1px solid #d3d9de;
   color: #657581;
   border-radius: 5px;
   font-size: 0.88rem;
@@ -80,13 +79,16 @@ const ButtonGhost = Styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #acb7ec;
+    background-color: #f0f2f4;
   }
 `;
 
 const CardFooter = Styled.div`
   display: flex;
   justify-content: space-between;
+  border-top: 1px solid #eaedfa;
+  padding: 15px 20px;
+
 `;
 
 const SECOND = 1;
@@ -96,14 +98,14 @@ const DAY = 1;
 const INTERVAL_SPEED = 650;
 
 function Card({ event, deleteEvent, editEvent }) {
-  const { key, id, name, displayDate, time, color } = event;
+  const { key, id, title, displayDate, timer, color } = event;
 
-  const [eventTime, setEventTime] = useState(time);
+  const [eventTimer, setEventTimer] = useState(timer);
   const [timerOver, setTimerOver] = useState(false);
   const [isEventEditModalOpen, setIsEventEditModalOpen] = useState(false);
 
   useEffect(() => {
-    if (eventTime !== time) setEventTime(time);
+    if (eventTimer !== timer) setEventTimer(timer);
 
     const updateTime = (time) => {
       if (timerOver) {
@@ -159,13 +161,13 @@ function Card({ event, deleteEvent, editEvent }) {
     };
       
     const intervalId = setInterval(() => 
-      setEventTime((prevState) => updateTime(prevState))
+      setEventTimer((prevState) => updateTime(prevState))
     , INTERVAL_SPEED);
 
     if (timerOver) clearInterval(intervalId); 
 
     return () => clearInterval(intervalId);
-  }, [time, timerOver]);
+  }, [timer, timerOver]);
 
   const handleOnDelete = () => {
     deleteEvent(id);
@@ -188,18 +190,19 @@ function Card({ event, deleteEvent, editEvent }) {
     removeFromLocalStorage(EVENTS_KEY);
     saveToLocalStorage(EVENTS_KEY, savedEvents);
   } 
+
   return (
     <Fragment key={key}>
       <CardWrapper color={color.value}>
         <Timer>
-          <Counter value={eventTime.days} name="days" color={color.value} />
-          <Counter value={eventTime.hours} name="hours" color={color.value} />
-          <Counter value={eventTime.minutes} name="minutes" color={color.value} />
-          <Counter value={eventTime.seconds} name="seconds" color={color.value} />
+          <Counter value={eventTimer.days} name="days" color={color.value} />
+          <Counter value={eventTimer.hours} name="hours" color={color.value} />
+          <Counter value={eventTimer.minutes} name="minutes" color={color.value} />
+          <Counter value={eventTimer.seconds} name="seconds" color={color.value} />
         </Timer>
         <CardDetails>
           <StyledHeader>Countdown to:</StyledHeader>
-          <EventName>{name}</EventName>
+          <EventName>{title}</EventName>
           <Date>{displayDate}</Date>
         </CardDetails>
         <CardFooter>

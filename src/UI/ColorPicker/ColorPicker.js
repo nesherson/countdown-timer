@@ -38,7 +38,7 @@ const Label = Styled.label`
     font-size: 0.9rem;
 `;
 
-const ColorPicker = ({ color, setColor }) => {
+const ColorPicker = ({ color, onChange }) => {
   const [colors, setColors] = useState([
     { id: 1, value: 'rgba(249, 55, 28, 1)', isSelected: false },
     { id: 2, value: 'rgba(249, 124, 28, 1)', isSelected: false },
@@ -57,7 +57,7 @@ const ColorPicker = ({ color, setColor }) => {
       }
     });
     setColors(updatedColors);
-    setColor({
+    onChange({
       id: colors[i].id,
       value: colors[i].value
     });
@@ -71,7 +71,7 @@ const ColorPicker = ({ color, setColor }) => {
       const temp = colors.find(c => c.id === color.id);
       temp.isSelected = true;
     }
-  }, [color, colors, setColor]);
+  }, [color, colors]);
 
   return (
     <Container>

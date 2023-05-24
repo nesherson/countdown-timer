@@ -25,10 +25,8 @@ const Label = Styled.label`
   font-weight: 500;
 `;
 
-const DatePicker = ({ date, handleSelectedDate }) => {
-  const handleSetDate = (e) => {
-    handleSelectedDate(e.target.value);
-  };
+const DatePicker = ({ date, onChange }) => {
+  const handleSetDate = (e) => onChange(e.target.value);
 
   return (
     <Wrapper>

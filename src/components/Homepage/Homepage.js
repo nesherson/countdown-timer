@@ -3,7 +3,8 @@ import { createPortal } from "react-dom";
 import Styled from "styled-components";
 
 import { saveToLocalStorage, loadFromLocalStorage, removeFromLocalStorage } from "src/util/localStorage";
-import { getTimeBetweenDates } from "src/util/date";
+import { getLocaleDateString, getTimeBetweenDates, defaultDateOptions, defaultDateTimeOptions } from "src/util/date";
+import { createEventId } from "src/util/helpers";
 
 import { EVENTS_KEY } from "src/constants/localStorageKeys";
 
@@ -53,25 +54,24 @@ function Homepage() {
   }, []);
 
   const handleCreateEvent = (
-    eventName,
-    eventTime,
-    selectedDate,
-    selectedColor
+    title,
+    date,
+    time,
+    color,
+    timer
   ) => {
-    const updatedDate = new Date(selectedDate).toLocaleDateString(undefined, {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit"
-    });
+    let displayDate = getLocaleDateString(date, undefined, defaultDateOptions);
+    if (time) 
+      displayDate = getLocaleDateString(`${date} ${time}`, undefined, defaultDateTimeOptions);
+
     const event = {
-      id: `${Math.random()}${eventName}`,
-      name: eventName,
-      date: selectedDate,
-      displayDate: updatedDate,
-      time: eventTime,
-      color: selectedColor,
+      id: createEventId(title),
+      title: title,
+      date: date,
+      displayDate: displayDate,
+      time: time,
+      timer: timer,
+      color: color,
     };
     const updatedEvents = [...events, event];
     setEvents(updatedEvents);
