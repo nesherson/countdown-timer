@@ -1,10 +1,16 @@
 import { useState } from "react";
 import Styled from "styled-components";
 
-import { getTimeBetweenDates } from "src/util/date";
+import {
+  getTimeBetweenDates,
+  getLocaleDateString,
+  defaultDateOptions,
+  defaultDateTimeOptions,
+} from "src/util/date";
+import { createEventId } from "src/util/helpers";
 
-import DatePicker from "src/UI/DatePicker/DatePicker";
-import ColorPicker from "src/UI/ColorPicker/ColorPicker";
+import DatePicker from "src/UI/datePicker/DatePicker";
+import ColorPicker from "src/UI/colorPicker/ColorPicker";
 
 const Container = Styled.div`
   display: flex;
@@ -108,6 +114,7 @@ function AddEvent({ createEvent, closeModal }) {
   const [useTime, setUseTime] = useState(false);
 
   const [invalidDate, setInvalidDate] = useState(false);
+  const [invalidTime, setInvalidTime] = useState(false);
   const [invalidTitle, setInvalidTitle] = useState(false);
 
   const handleTitleOnChange = (e) => setTitle(e.target.value);
@@ -136,7 +143,30 @@ function AddEvent({ createEvent, closeModal }) {
       return;
     }
 
-    createEvent(title, date, time, color, timer);
+    if (!time) {
+      setInvalidTime(true);
+      return;
+    }
+
+    let displayDate = getLocaleDateString(date, undefined, defaultDateOptions);
+    if (time)
+      displayDate = getLocaleDateString(
+        `${date} ${time}`,
+        undefined,
+        defaultDateTimeOptions
+      );
+
+    const event = {
+      id: createEventId(title),
+      title: title,
+      date: date,
+      displayDate: displayDate,
+      time: time,
+      timer: timer,
+      color: color,
+    };
+
+    createEvent(event);
     setInvalidDate(false);
     setInvalidTitle(false);
     setTitle("");
@@ -162,12 +192,7 @@ function AddEvent({ createEvent, closeModal }) {
             />
           </FormLayoutElement>
           <FormLayoutElement>
-            <DatePicker
-              date={date}
-              onChange={handleDateOnChange}
-            />
-            {invalidTitle ? <Warning>Empty Title Input!</Warning> : null}
-            {invalidDate ? <Warning>Invalid Date!</Warning> : null}
+            <DatePicker date={date} onChange={handleDateOnChange} />
           </FormLayoutElement>
           <FormLayoutElement>
             <input
@@ -186,6 +211,9 @@ function AddEvent({ createEvent, closeModal }) {
           <FormLayoutElement>
             <ColorPicker color={color} onChange={handleColorOnChange} />
           </FormLayoutElement>
+          {invalidTitle && <Warning>Empty Title Input</Warning>}
+          {invalidDate && <Warning>Invalid Date</Warning>}
+          {invalidTime && <Warning>Invalid Time</Warning>}
         </CardBody>
         <CardFooter>
           <ButtonGhost onClick={closeModal}>Cancel</ButtonGhost>

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import Styled from "styled-components";
 
-import { getLocaleDateString, getTimeBetweenDates } from "src/util/date";
+import { getLocaleDateString, getTimeBetweenDates, defaultDateOptions, defaultDateTimeOptions } from "src/util/date";
 
-import DatePicker from "src/UI/DatePicker/DatePicker";
-import ColorPicker from "src/UI/ColorPicker/ColorPicker";
+import DatePicker from "src/UI/datePicker/DatePicker";
+import ColorPicker from "src/UI/colorPicker/ColorPicker";
 
 const Container = Styled.div`
   display: flex;
@@ -106,13 +106,20 @@ function EditEvent({ editEvent, closeModal, eventToEdit, isOpen }) {
   const [useTime, setUseTime] = useState(false);
 
   const [invalidDate, setInvalidDate] = useState(false);
+  const [invalidTime, setInvalidTime] = useState(false);
   const [invalidTitle, setInvalidTitle] = useState(false);
 
   const handleTitleOnChange = (e) => setTitle(e.target.value);
   const handleDateOnChange = (date) => setDate(date);
   const handleColorOnChange = (color) => setColor(color);
   const handleTimeOnChange = (e) => setTime(e.target.value);
-  const handleUseTimeOnChange = (e) => setUseTime(e.target.checked);
+  const handleUseTimeOnChange = (e) => {
+    const checked = e.target.checked; 
+    if (checked === false) {
+      setTime("");
+    }
+    setUseTime(checked);
+  }
 
   const handleEventEdit = () => {
     const currentDate = Date.now();
@@ -134,13 +141,18 @@ function EditEvent({ editEvent, closeModal, eventToEdit, isOpen }) {
       return;
     }
 
+    if (!time) {
+      setInvalidTime(true);
+      return;
+    }
+
+    let displayDate = getLocaleDateString(date, undefined, defaultDateOptions);
+    if (time) 
+      displayDate = getLocaleDateString(`${date} ${time}`, undefined, defaultDateTimeOptions);
+
     eventToEdit.title = title;
     eventToEdit.date = date;
-    eventToEdit.displayDate = getLocaleDateString(date, undefined, {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    })
+    eventToEdit.displayDate = displayDate;
     eventToEdit.timer = timer;
     eventToEdit.time = time;
     eventToEdit.color = color;
@@ -155,7 +167,6 @@ function EditEvent({ editEvent, closeModal, eventToEdit, isOpen }) {
     if (eventToEdit && isOpen === true) {
       setTitle(eventToEdit.title);
       setColor(eventToEdit.color);
-
       setDate(eventToEdit.date);
 
       if (eventToEdit.time) {
@@ -185,8 +196,6 @@ function EditEvent({ editEvent, closeModal, eventToEdit, isOpen }) {
               date={date}
               onChange={handleDateOnChange}
             />
-            {invalidTitle ? <Warning>Empty Title Input!</Warning> : null}
-            {invalidDate ? <Warning>Wrong Date!</Warning> : null}
           </FormLayoutElement>
           <FormLayoutElement>
             <input
@@ -205,6 +214,9 @@ function EditEvent({ editEvent, closeModal, eventToEdit, isOpen }) {
           <FormLayoutElement>
             <ColorPicker color={color} onChange={handleColorOnChange} />
           </FormLayoutElement>
+            {invalidTitle && <Warning>Empty Title Input</Warning>}
+            {invalidDate && <Warning>Invalid Date</Warning>}
+            {invalidTime && <Warning>Invalid Time</Warning>}
         </CardBody>
         <CardFooter>
           <ButtonGhost onClick={closeModal}>Cancel</ButtonGhost>

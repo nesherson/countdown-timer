@@ -1,6 +1,6 @@
 import Styled from "styled-components";
 
-import Card from "./Card/Card";
+import Card from "./card/Card";
 
 const Events = Styled.div`
     padding: 15px 3%;

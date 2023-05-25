@@ -3,15 +3,14 @@ import { createPortal } from "react-dom";
 import Styled from "styled-components";
 
 import { saveToLocalStorage, loadFromLocalStorage, removeFromLocalStorage } from "src/util/localStorage";
-import { getLocaleDateString, getTimeBetweenDates, defaultDateOptions, defaultDateTimeOptions } from "src/util/date";
-import { createEventId } from "src/util/helpers";
+import { getTimeBetweenDates, } from "src/util/date";
 
 import { EVENTS_KEY } from "src/constants/localStorageKeys";
 
-import Header from "./Header/Header";
-import EventSection from "./EventSection/EventSection";
-import AddEvent from "./AddEvent/AddEvent";
-import Modal from "src/UI/dialog/Modal";
+import Header from "./header/Header";
+import EventSection from "./eventSection/EventSection";
+import AddEvent from "./addEvent/AddEvent";
+import Modal from "src/UI/modal/Modal";
 
 const Container = Styled.div`
   position: relative;
@@ -53,26 +52,7 @@ function Homepage() {
     }
   }, []);
 
-  const handleCreateEvent = (
-    title,
-    date,
-    time,
-    color,
-    timer
-  ) => {
-    let displayDate = getLocaleDateString(date, undefined, defaultDateOptions);
-    if (time) 
-      displayDate = getLocaleDateString(`${date} ${time}`, undefined, defaultDateTimeOptions);
-
-    const event = {
-      id: createEventId(title),
-      title: title,
-      date: date,
-      displayDate: displayDate,
-      time: time,
-      timer: timer,
-      color: color,
-    };
+  const handleCreateEvent = (event) => {
     const updatedEvents = [...events, event];
     setEvents(updatedEvents);
     saveToLocalStorage(EVENTS_KEY, updatedEvents);
@@ -103,7 +83,7 @@ function Homepage() {
     setIsEventAddModalOpen(false);
 
   const getEventTimeUpToDate = (event) => {
-    event.time = getTimeBetweenDates(Date.now(), event.date);
+    event.timer = getTimeBetweenDates(Date.now(), event.date);
   }
 
   return (

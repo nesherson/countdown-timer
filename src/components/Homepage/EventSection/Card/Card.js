@@ -7,9 +7,9 @@ import { setAlpha } from "src/util/helpers";
 import { saveToLocalStorage, loadFromLocalStorage, removeFromLocalStorage } from "src/util/localStorage";
 import { EVENTS_KEY } from "src/constants/localStorageKeys";
 
-import Counter from "src/UI/Counter/Counter";
+import Counter from "src/UI/counter/Counter";
 import EditEvent from "src/components/Homepage/editEvent/EditEvent";
-import Modal from "src/UI/dialog/Modal";
+import Modal from "src/UI/modal/Modal";
 
 const CardWrapper = Styled.div`
     margin: 25px 20px;
@@ -95,7 +95,7 @@ const SECOND = 1;
 const MINUTE = 1;
 const HOUR = 1;
 const DAY = 1;
-const INTERVAL_SPEED = 650;
+const INTERVAL_SPEED = 1000;
 
 function Card({ event, deleteEvent, editEvent }) {
   const { key, id, title, displayDate, timer, color } = event;
@@ -126,15 +126,11 @@ function Card({ event, deleteEvent, editEvent }) {
         };
       }
       if (time.seconds === 0 && time.minutes !== 0) {
-        const newTime = {
+        return {
           ...time,
           seconds: 60,
           minutes: time.minutes - MINUTE,
         };
-
-        updateEventAndSaveToLocalStorage(event.id, newTime);
-
-        return newTime;
       } else if (time.seconds === 0 && time.minutes === 0 && time.hours !== 0) {
         return {
           ...time,
@@ -181,15 +177,6 @@ function Card({ event, deleteEvent, editEvent }) {
   
   const handleCloseEventEditModal = () => 
     setIsEventEditModalOpen(false);
-
-  const updateEventAndSaveToLocalStorage = (currentEventId, newTime) => {
-    const savedEvents = loadFromLocalStorage(EVENTS_KEY);
-    const savedEventIndex = savedEvents.findIndex(se => se.id === currentEventId);
-    savedEvents[savedEventIndex].time = newTime;
-
-    removeFromLocalStorage(EVENTS_KEY);
-    saveToLocalStorage(EVENTS_KEY, savedEvents);
-  } 
 
   return (
     <Fragment key={key}>
