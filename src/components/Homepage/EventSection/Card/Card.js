@@ -20,18 +20,16 @@ const CardWrapper = Styled.div`
     border: 1px solid #eaedfa;
 
     box-shadow:
-  0px 2px 6px -9px ${(props) => setAlpha(props.color, 0.18)},
-  0px 2px 20px -9px ${(props) => setAlpha(props.color, 0.24)}
+  0px 2px 6px -9px ${(props) => setAlpha(props.color, 0.28)},
+  0px 2px 20px -9px ${(props) => setAlpha(props.color, 0.48)}
 ;
 
     @media only screen and (max-width: 768px) {
       margin: 25px 5% 0 5%;
-      padding: 35px 3% 30px 3%;
     }
 
     @media only screen and (max-width: 480px) {
       margin: 25px 7px 0 7px;
-      padding: 35px 2% 30px 2%;
     }
 `;
 

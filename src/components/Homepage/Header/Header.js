@@ -34,7 +34,6 @@ const Wrapper = Styled.div`
 
     @media only screen and (max-width: 440px) {
       width: 100%;
-      margin: 0 7px;
     } 
 `;
 

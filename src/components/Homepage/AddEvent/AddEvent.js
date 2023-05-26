@@ -143,7 +143,7 @@ function AddEvent({ createEvent, closeModal }) {
       return;
     }
 
-    if (!time) {
+    if (useTime && !time) {
       setInvalidTime(true);
       return;
     }

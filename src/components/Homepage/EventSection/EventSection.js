@@ -13,6 +13,7 @@ const Events = Styled.div`
 
     @media only screen and (max-width: 480px) {
       padding: 15px 0;
+      justify-content: center;
     }
 `;
 
